@@ -135,6 +135,6 @@ export const footerCompany = [
   { label: "Our work", href: "/work" },
   { label: "Platform", href: "/pricing" },
   { label: "Pricing", href: "/pricing" },
-  { label: "Blog", href: "#" },
+  { label: "Blog", href: "/blog" },
   { label: "Contact", href: "/contact" },
 ];

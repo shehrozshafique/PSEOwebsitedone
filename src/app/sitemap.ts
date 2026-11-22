@@ -3,6 +3,7 @@ import { site } from "@/lib/site";
 import { servicesData } from "@/lib/services";
 import { cases } from "@/lib/cases";
 import { areas } from "@/lib/areas";
+import { categoryKeys, posts } from "@/lib/blog";
 
 /** /sitemap.xml: every public page. The thank-you page is left out on purpose. */
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -23,6 +24,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     page("/contact", 0.6),
     ...servicesData.map((s) => page(`/services/${s.slug}`, 0.9)),
     ...cases.map((c) => page(`/work/${c.slug}`, 0.7)),
+    page("/blog", 0.8, "weekly"),
+    ...categoryKeys.map((k) => page(`/blog/category/${k}`, 0.5, "weekly")),
+    ...posts.map((p) => ({ ...page(`/blog/${p.slug}`, 0.7), lastModified: new Date(p.updated ?? p.date) })),
     page("/areas", 0.7),
     // example cities are noindex until real local content is added
     ...areas.filter((a) => !a.example).map((a) => page(`/areas/${a.slug}`, 0.8)),

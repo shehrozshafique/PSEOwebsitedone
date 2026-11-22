@@ -57,6 +57,7 @@ const solutions = [
 const company = [
   { label: "About us", text: "Our story and how we work", href: "/about" },
   { label: "Our work", text: "Case studies with real numbers", href: "/work" },
+  { label: "Blog", text: "Guides on SEO, ads and automation", href: "/blog" },
   { label: "Areas we serve", text: "Cities and nearby towns", href: "/areas" },
   { label: "Contact", text: "Call, text, email or message", href: "/contact" },
 ];
@@ -261,6 +262,7 @@ export default function Header({ dark = true }: { dark?: boolean }) {
               {trigger("solutions", "Who we help")}
               <li><Link href="/work" className={linkCls}>Work</Link></li>
               <li><Link href="/pricing" className={linkCls}>Pricing</Link></li>
+              <li><Link href="/blog" className={linkCls}>Blog</Link></li>
               {trigger("company", "Company")}
             </ul>
           </nav>

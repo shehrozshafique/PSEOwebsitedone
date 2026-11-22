@@ -19,9 +19,11 @@ export type CaseStudy = {
   services: { name: string; slug: string }[];
   timeline: string;
   challenge: string[];
-  did: { title: string; text: string }[];
+  did: { title: string; text: string; when: string }[];
   results: { label: string; before: string; after: string }[];
   quote: { text: string; role: string };
+  /** Monthly series for the growth chart. `launch` = index of the first month after the work went live. */
+  chart: { title: string; prefix?: string; suffix?: string; months: string[]; values: number[]; launch: number };
 };
 
 export const cases: CaseStudy[] = [
@@ -48,9 +50,9 @@ export const cases: CaseStudy[] = [
       "They showed up on page 2 of Google Maps, and calls that came in after 5 PM went to voicemail and were never returned.",
     ],
     did: [
-      { title: "Rebuilt the website", text: "Fast, mobile-first pages for every service and every town they serve, with tap-to-call and a 3-field quote form." },
-      { title: "Fixed Google Maps", text: "Optimized their Google Business Profile, added weekly posts and turned on review requests after every job." },
-      { title: "Stopped missing leads", text: "Missed calls get a text in 5 seconds, and every form gets a reply in under a minute, day or night." },
+      { title: "Rebuilt the website", when: "Weeks 1–4", text: "Fast, mobile-first pages for every service and every town they serve, with tap-to-call and a 3-field quote form." },
+      { title: "Fixed Google Maps", when: "Weeks 2–6", text: "Optimized their Google Business Profile, added weekly posts and turned on review requests after every job." },
+      { title: "Stopped missing leads", when: "Week 5", text: "Missed calls get a text in 5 seconds, and every form gets a reply in under a minute, day or night." },
     ],
     results: [
       { label: "Calls per month", before: "38", after: "114" },
@@ -59,6 +61,7 @@ export const cases: CaseStudy[] = [
       { label: "Reply time to new leads", before: "next day", after: "< 1 min" },
     ],
     quote: { text: "We used to lose every call that came in after hours. Now they get a text right away and most of them book.", role: "Owner, roofing company" },
+    chart: { title: "Calls per month", months: ["May", "Jun", "Jul", "Aug", "Sep", "Oct"], values: [35, 38, 40, 63, 92, 114], launch: 3 },
   },
   {
     slug: "dental-clinic-142-bookings",
@@ -83,9 +86,9 @@ export const cases: CaseStudy[] = [
       "No-shows were high, and they only ranked near their own street, not in the towns around them.",
     ],
     did: [
-      { title: "Online booking", text: "Patients book 24/7 from the website and Google profile, with instant confirmation." },
-      { title: "Town pages + Maps", text: "A page for each nearby town and a stronger Google profile, so they show up across the area." },
-      { title: "Reminders that work", text: "Text reminders 1 day and 1 hour before, with an easy reschedule link." },
+      { title: "Online booking", when: "Weeks 1–2", text: "Patients book 24/7 from the website and Google profile, with instant confirmation." },
+      { title: "Town pages + Maps", when: "Weeks 2–4", text: "A page for each nearby town and a stronger Google profile, so they show up across the area." },
+      { title: "Reminders that work", when: "Week 4", text: "Text reminders 1 day and 1 hour before, with an easy reschedule link." },
     ],
     results: [
       { label: "New bookings per month", before: "61", after: "203" },
@@ -94,6 +97,7 @@ export const cases: CaseStudy[] = [
       { label: "Bookings made after hours", before: "0", after: "37%" },
     ],
     quote: { text: "Patients book at 10 at night now. The front desk spends less time on the phone and the calendar is fuller than ever.", role: "Practice manager, dental clinic" },
+    chart: { title: "New bookings per month", months: ["Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct"], values: [58, 61, 63, 92, 121, 148, 170, 189, 203], launch: 3 },
   },
   {
     slug: "law-firm-rank-1",
@@ -118,9 +122,9 @@ export const cases: CaseStudy[] = [
       "Visitors left without contacting them, and consultation requests sat in an inbox for days.",
     ],
     did: [
-      { title: "Practice-area pages", text: "A detailed page for each practice area, written to answer the questions clients actually ask." },
-      { title: "AI intake chat", text: "A chat assistant that answers basic questions and books consultations around the clock." },
-      { title: "Fast follow-up", text: "Every request gets an instant reply and a reminder sequence until the consultation is booked." },
+      { title: "Practice-area pages", when: "Weeks 1–6", text: "A detailed page for each practice area, written to answer the questions clients actually ask." },
+      { title: "AI intake chat", when: "Weeks 5–7", text: "A chat assistant that answers basic questions and books consultations around the clock." },
+      { title: "Fast follow-up", when: "Week 8", text: "Every request gets an instant reply and a reminder sequence until the consultation is booked." },
     ],
     results: [
       { label: "Searches ranking #1", before: "0", after: "14" },
@@ -129,6 +133,7 @@ export const cases: CaseStudy[] = [
       { label: "Time to first reply", before: "2–3 days", after: "< 1 min" },
     ],
     quote: { text: "We finally get found by people who need us, and the chat books consultations while we’re in court.", role: "Managing partner, law firm" },
+    chart: { title: "Website visitors per month", months: ["Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct"], values: [880, 900, 910, 1200, 1650, 2300, 2900, 3500, 3900, 4200, 4500, 4800], launch: 3 },
   },
   {
     slug: "skincare-store-68-percent",
@@ -153,9 +158,9 @@ export const cases: CaseStudy[] = [
       "Email went out once a month, carts were abandoned with no reminder, and rising ad costs were eating the profit.",
     ],
     did: [
-      { title: "Fixed the store", text: "Faster pages, clearer product pages and a shorter checkout on mobile." },
-      { title: "Turned on the flows", text: "Welcome, abandoned cart, post-purchase, review and win-back emails and texts." },
-      { title: "Rebuilt the ads", text: "Google Shopping and Meta campaigns judged on return on ad spend, not clicks." },
+      { title: "Fixed the store", when: "Week 1", text: "Faster pages, clearer product pages and a shorter checkout on mobile." },
+      { title: "Turned on the flows", when: "Week 2", text: "Welcome, abandoned cart, post-purchase, review and win-back emails and texts." },
+      { title: "Rebuilt the ads", when: "Weeks 2–4", text: "Google Shopping and Meta campaigns judged on return on ad spend, not clicks." },
     ],
     results: [
       { label: "Monthly revenue", before: "$41K", after: "$69K" },
@@ -164,6 +169,7 @@ export const cases: CaseStudy[] = [
       { label: "Repeat-customer rate", before: "14%", after: "27%" },
     ],
     quote: { text: "The flows paid for everything in the first month. Customers actually come back now.", role: "Founder, skincare brand" },
+    chart: { title: "Monthly revenue", prefix: "$", suffix: "K", months: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct"], values: [39, 40, 41, 48, 56, 63, 69], launch: 3 },
   },
 ];
 
