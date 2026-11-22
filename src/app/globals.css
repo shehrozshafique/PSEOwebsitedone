@@ -1,0 +1,110 @@
+@import "tailwindcss";
+
+/* Design tokens — light-first, black bands for impact, green for actions. */
+@theme {
+  --color-ink: #0a0b0a;
+  --color-carbon: #141716;
+  --color-paper: #f4f5f1;
+  --color-paper-2: #eceee8;
+  --color-slate: #555c57;
+  --color-mist: #a3aaa5;
+  --color-line: rgb(10 12 11 / 0.1);
+  --color-green: #3ddc6e;
+  --color-green-soft: #6cf08c;
+  --color-green-ink: #0f7a36;
+  --color-lime: #d2f99a;
+  --color-blue: #4d8dff;
+  --color-amber: #f29a00;
+  --color-violet: #8b6bff;
+  --color-coral: #ff6a4a;
+  --color-sky: #cfe6ff;
+  --color-peach: #ffe4c7;
+  --color-lilac: #e7e0ff;
+  --color-mint: #d7f8e1;
+
+  --font-display: var(--nf-display), "Onest", system-ui, sans-serif;
+  --font-sans: var(--nf-body), "Inter", system-ui, sans-serif;
+  --font-mono: var(--nf-code), ui-monospace, monospace;
+
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+html, body { overflow-x: clip; }
+html { scroll-behavior: auto; }
+section[id] { scroll-margin-top: 90px; }
+body {
+  background: #fff;
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+/* in the base layer so utility classes like whitespace-nowrap still win */
+@layer base {
+  h1, h2, h3 { text-wrap: balance; }
+  p { text-wrap: pretty; }
+  a, button { -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+}
+::selection { background: var(--color-lime); color: var(--color-ink); }
+:focus-visible { outline: 2px solid var(--color-blue); outline-offset: 3px; }
+
+@utility btn {
+  @apply relative isolate inline-flex items-center justify-center gap-2 overflow-hidden rounded-xl px-6 py-3.5 text-[15px] font-semibold transition-[background-color,transform,box-shadow] duration-200 active:scale-[.97];
+}
+
+@layer components {
+  .container-x { @apply mx-auto w-full max-w-[1200px] px-5 sm:px-8; }
+  .section { @apply py-16 sm:py-24 md:py-36; }
+  .h-display { @apply font-display font-extrabold tracking-[-0.01em] leading-[1.02]; }
+
+  .btn-green { @apply btn bg-green text-[#03150a] hover:bg-green-soft; }
+  .btn-ink { @apply btn bg-ink text-white hover:bg-carbon; }
+  .btn-outline-light { @apply btn border border-white/50 text-white hover:bg-white/10; }
+  .btn-outline { @apply btn border border-ink/20 text-ink hover:bg-paper; }
+
+  .glass-light { background: #fff; box-shadow: 0 10px 30px -18px rgb(10 12 11 / 0.35); }
+  .glass-dark { background: #161a18; }
+
+  /* nav links: underline grows from the left */
+  .nav-link { position: relative; }
+  .nav-link::after {
+    content: ""; position: absolute; left: 14px; right: 14px; bottom: 6px; height: 2px; border-radius: 2px;
+    background: var(--color-green); transform: scaleX(0); transform-origin: left; transition: transform .35s cubic-bezier(.22,1,.36,1);
+  }
+  .nav-link:hover::after { transform: scaleX(1); }
+
+  .marker {
+    background: linear-gradient(var(--color-lime), var(--color-lime)) no-repeat 0 88% / var(--mk, 100%) 38%;
+    padding: 0 0.12em;
+  }
+}
+
+/* ---------- phones (80% of visitors) ---------- */
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
+}
+@media (max-width: 767px) {
+  /* 16px stops iPhone from zooming in when a field is tapped */
+  input, select, textarea { font-size: 16px !important; }
+}
+@media (max-width: 1023px) {
+  /* header pill: solid enough that page text never shows through it */
+  .glass-light.nav-solid { background: rgb(255 255 255 / 0.96); }
+}
+@media (pointer: coarse) {
+  html { scroll-behavior: smooth; }
+}
+
+@keyframes marquee { to { transform: translateX(-50%); } }
+@keyframes marquee-rev { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+@keyframes float { 50% { transform: translateY(-14px) rotate(5deg); } }
+@keyframes chev { 50% { opacity: 0.2; transform: translateX(5px); } }
+@keyframes chev-r { 50% { opacity: 0.2; transform: translateX(-5px); } }
+@keyframes shine { 0%, 60% { transform: translateX(-120%) skewX(-20deg); } 100% { transform: translateX(220%) skewX(-20deg); } }
+.animate-marquee { animation: marquee 45s linear infinite; }
+.animate-marquee-rev { animation: marquee-rev 45s linear infinite; }
+.animate-float { animation: float 7s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
