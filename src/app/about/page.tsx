@@ -4,7 +4,7 @@ import Link from "next/link";
 import Header from "@/components/home/Header";
 import { FinalCta, Footer } from "@/components/home/Closing";
 import { Marker, Reveal } from "@/components/motion";
-import { founder, story, team, values, versus } from "@/lib/about";
+import { founders, foundersNote, story, team, values, versus } from "@/lib/about";
 import { site, stages } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -45,7 +45,7 @@ export default function AboutPage() {
               </p>
             </div>
             <div className="relative mx-auto grid aspect-square w-full max-w-[420px] place-items-center">
-              <Image src="/graphics/loop.webp" alt="" width={900} height={600} className="animate-float relative w-full drop-shadow-[0_30px_40px_rgba(0,0,0,.18)]" />
+              <Image src="/graphics/hero-growth.webp" alt="" width={1100} height={1100} priority sizes="(min-width: 1024px) 420px, 80vw" className="animate-float relative w-[88%] drop-shadow-[0_30px_40px_rgba(0,0,0,.25)]" />
             </div>
           </div>
         </section>
@@ -60,22 +60,24 @@ export default function AboutPage() {
               </div>
             </Reveal>
             <Reveal delay={0.1} className="lg:pt-16">
-              <figure className="overflow-hidden rounded-[20px] bg-ink text-white">
-                <div className="relative aspect-[4/5]">
-                  {founder.photo ? (
-                    <Image src={founder.photo} alt={`${founder.name}, ${founder.role}`} fill sizes="(min-width: 1024px) 420px, 100vw" className="object-cover" />
-                  ) : (
-                    <>
-                      <span className="absolute inset-0 grid place-items-center font-display text-8xl font-black text-white/15" aria-hidden="true">{initials(founder.name)}</span>
-                    </>
-                  )}
-                </div>
-                <figcaption className="p-6">
-                  <p className="font-display text-xl font-bold">{founder.name}</p>
-                  <p className="text-sm text-mist">{founder.role}</p>
-                  <p className="mt-3 text-sm text-white/70">{founder.note}</p>
-                </figcaption>
-              </figure>
+              <div className="grid grid-cols-2 gap-3">
+                {founders.map((f) => (
+                  <figure key={f.name} className="overflow-hidden rounded-[20px] bg-ink text-white">
+                    <div className="relative aspect-[4/5]">
+                      {f.photo ? (
+                        <Image src={f.photo} alt={`${f.name}, ${f.role}`} fill sizes="(min-width: 1024px) 220px, 50vw" className="object-cover" />
+                      ) : (
+                        <span className="absolute inset-0 grid place-items-center font-display text-6xl font-black text-white/15" aria-hidden="true">{initials(f.name)}</span>
+                      )}
+                    </div>
+                    <figcaption className="p-5">
+                      <p className="font-display text-xl font-bold">{f.name}</p>
+                      <p className="text-sm text-mist">{f.role}</p>
+                    </figcaption>
+                  </figure>
+                ))}
+              </div>
+              <p className="mt-4 text-[15px] text-slate">{foundersNote}</p>
             </Reveal>
           </div>
         </section>

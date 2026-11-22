@@ -7,7 +7,8 @@ import { stages } from "@/lib/site";
 import { Marker, Reveal } from "@/components/motion";
 import { ScrollTilt } from "@/components/effects";
 
-const STEP_MS = 6000;
+const STEP_MS = 4000; // time on each stage
+const RESUME_MS = 10000; // after a tap, wait this long, then keep playing
 // 3D icon that hops onto each stage's bar
 const ICON: Record<string, string> = { found: "seo", leads: "website", close: "ai", automate: "shop", scale: "ads" };
 const HEIGHTS = [26, 39, 52, 65, 78]; // % — the bars rise like the logo
@@ -68,17 +69,23 @@ function StageBars({ active }: { active: number }) {
 export default function GrowthTabs() {
   const [i, setI] = useState(0);
   const [auto, setAuto] = useState(true);
-  const [playing, setPlaying] = useState(false); // auto-advance only on larger screens without reduced motion
+  const [inView, setInView] = useState(false);
   const s = stages[i];
   const rail = useRef<HTMLDivElement>(null);
+  const board = useRef<HTMLDivElement>(null);
+  const resume = useRef<ReturnType<typeof setTimeout> | null>(null);
   const reduce = useReducedMotion();
+  // Plays on every screen size and keeps going on hover; only runs while the board is on screen.
+  const playing = auto && inView && !reduce;
 
   useEffect(() => {
-    const ok = () => setPlaying(auto && !window.matchMedia("(prefers-reduced-motion: reduce)").matches && !window.matchMedia("(max-width: 767px)").matches);
-    ok();
-    window.addEventListener("resize", ok);
-    return () => window.removeEventListener("resize", ok);
-  }, [auto]);
+    const el = board.current;
+    if (!el) return;
+    const io = new IntersectionObserver(([e]) => setInView(e.isIntersecting), { threshold: 0.35 });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+  useEffect(() => () => { if (resume.current) clearTimeout(resume.current); }, []);
 
   // phones: keep the active tab in view inside the swipe rail (without moving the page)
   useEffect(() => {
@@ -115,8 +122,11 @@ export default function GrowthTabs() {
                 aria-selected={active}
                 aria-controls="growth-panel"
                 onClick={() => {
+                  // a tap shows that stage, then auto-play picks up again after a short pause
                   setI(idx);
                   setAuto(false);
+                  if (resume.current) clearTimeout(resume.current);
+                  resume.current = setTimeout(() => setAuto(true), RESUME_MS);
                 }}
                 className="relative flex-none snap-start overflow-hidden rounded-xl border border-line px-5 py-3 text-sm font-semibold whitespace-nowrap transition-colors"
                 style={{ color: active ? "#fff" : undefined }}
@@ -142,11 +152,21 @@ export default function GrowthTabs() {
         </div>
 
         <ScrollTilt className="mt-8">
-          <div id="growth-panel" role="tabpanel" className="relative overflow-hidden rounded-2xl bg-paper shadow-[0_40px_80px_-50px_rgba(0,0,0,.45)]">
+          <div ref={board} id="growth-panel" role="tabpanel" className="relative overflow-hidden rounded-2xl bg-paper shadow-[0_40px_80px_-50px_rgba(0,0,0,.45)]">
             <div className="grid gap-10 p-6 sm:p-8 md:grid-cols-[1.1fr_.9fr] md:items-end md:gap-12 md:p-12">
+              <div className="grid">
+              {stages.map((st) => (
+                <div key={`size-${st.key}`} aria-hidden="true" className="invisible [grid-area:1/1]">
+                  <h3 className="font-display text-3xl font-extrabold md:text-4xl">{st.title}</h3>
+                  <p className="mt-3 max-w-[48ch]">{st.text}</p>
+                  <ul className="mt-6 grid gap-x-6 gap-y-2.5 sm:grid-cols-2">{st.items.map((it) => <li key={it} className="flex gap-2.5 text-[15px]"><span className="size-4 flex-none" />{it}</li>)}</ul>
+                  <span className="btn mt-8 w-full sm:w-auto">Start with a free audit →</span>
+                </div>
+              ))}
               <AnimatePresence mode="wait">
                 <motion.div
                   key={s.key}
+                  className="[grid-area:1/1]"
                   initial={reduce ? false : { opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -12 }}
@@ -171,6 +191,7 @@ export default function GrowthTabs() {
                   <a href="#audit" className="btn-ink mt-8 w-full sm:w-auto">Start with a free audit →</a>
                 </motion.div>
               </AnimatePresence>
+              </div>
 
               <StageBars active={i} />
             </div>

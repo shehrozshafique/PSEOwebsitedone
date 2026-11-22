@@ -10,7 +10,6 @@ import { Marker, Reveal } from "@/components/motion";
 import { Tilt } from "@/components/effects";
 import { Logo } from "./Header";
 import { submitLead } from "@/lib/attribution";
-import { areas } from "@/lib/areas";
 import FormConsent from "@/components/FormConsent";
 import { telHref } from "@/components/MobileCta";
 
@@ -188,7 +187,7 @@ export function FinalCta() {
             {/* TODO: real founder photo */}
             <span className="grid size-14 place-items-center rounded-full bg-white/10 font-display font-bold ring-2 ring-green" aria-hidden="true">You</span>
             <p className="text-sm text-white/70">
-              Reviewed personally by our founder,
+              Reviewed personally by our founders,
               <br />
               not an automated tool.
             </p>
@@ -255,7 +254,7 @@ export function FinalCta() {
 export function Footer() {
   return (
     <footer className="overflow-hidden bg-ink pt-14 text-white md:pt-20">
-      <div className="container-x grid grid-cols-2 gap-x-6 gap-y-10 border-t border-white/10 pt-12 sm:gap-12 sm:pt-14 lg:grid-cols-[1.4fr_1fr_1fr_1fr_1fr]">
+      <div className="container-x grid grid-cols-2 gap-x-6 gap-y-10 border-t border-white/10 pt-12 sm:gap-12 sm:pt-14 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
         <div className="col-span-2 lg:col-span-1">
           <Logo light />
           <p className="mt-5 max-w-[36ch] text-mist">
@@ -266,7 +265,6 @@ export function Footer() {
         </div>
         <FooterCol title="Services" items={footerServices} />
         <FooterCol title="Company" items={footerCompany} />
-        <FooterCol title="Areas we serve" items={[...areas.map((a) => ({ label: `${a.city}, ${a.state}`, href: `/areas/${a.slug}` })), { label: "View all areas →", href: "/areas" }]} />
         <FooterCol title="Get started" items={[{ label: "Free audit", href: "/free-audit" }, { label: "Book a call", href: "/contact#book" }, { label: "Client login", href: "#" }, { label: "Privacy Policy", href: "/privacy" }, { label: "Terms of Service", href: "/terms" }, { label: "SMS Terms", href: "/sms-terms" }]} />
       </div>
       <FooterWordmark />

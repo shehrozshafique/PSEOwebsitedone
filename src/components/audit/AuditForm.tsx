@@ -10,7 +10,7 @@ const businessTypes = ["Online store / Ecommerce", "Home services", "Roofing / C
 const goals = ["More calls from Google", "More online sales", "Better website or store", "Stop missing leads", "More reviews", "Not sure yet"];
 
 const input =
-  "w-full rounded-xl bg-white px-4 py-3.5 text-[15px] outline-none transition-colors placeholder:text-ink/35 focus:border-blue";
+  "w-full rounded-xl border border-ink/15 bg-paper px-4 py-3.5 text-[15px] outline-none transition-colors placeholder:text-ink/40 hover:border-ink/30 focus:border-ink focus:bg-white";
 
 /**
  * Two short steps: about the business, then contact details.

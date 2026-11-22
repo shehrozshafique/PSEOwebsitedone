@@ -95,6 +95,19 @@ body {
   html { scroll-behavior: smooth; }
 }
 
+/* home hero: green grid that fades toward the edges and drifts slowly */
+.hero-grid {
+  background-image:
+    linear-gradient(rgb(61 220 110 / 0.3) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(61 220 110 / 0.3) 1px, transparent 1px);
+  background-size: 56px 56px;
+  background-position: center top;
+  -webkit-mask-image: radial-gradient(ellipse 80% 75% at 50% 45%, #000 35%, transparent 80%);
+  mask-image: radial-gradient(ellipse 80% 75% at 50% 45%, #000 35%, transparent 80%);
+  animation: grid-drift 24s linear infinite;
+}
+@keyframes grid-drift { to { background-position: center 56px; } }
+
 @keyframes marquee { to { transform: translateX(-50%); } }
 @keyframes marquee-rev { from { transform: translateX(-50%); } to { transform: translateX(0); } }
 @keyframes float { 50% { transform: translateY(-14px) rotate(5deg); } }

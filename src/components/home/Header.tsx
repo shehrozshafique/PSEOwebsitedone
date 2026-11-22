@@ -37,7 +37,7 @@ const solutions = [
       { label: "Local SEO & Google Maps", href: "/services/local-seo" },
       { label: "Website design", href: "/services/website-design" },
       { label: "Missed-call text back & AI", href: "/services/ai-automation" },
-      { label: "Areas we serve", href: "/areas" },
+      { label: "Client results", href: "/work" },
     ],
   },
   {
@@ -58,7 +58,6 @@ const company = [
   { label: "About us", text: "Our story and how we work", href: "/about" },
   { label: "Our work", text: "Case studies with real numbers", href: "/work" },
   { label: "Blog", text: "Guides on SEO, ads and automation", href: "/blog" },
-  { label: "Areas we serve", text: "Cities and nearby towns", href: "/areas" },
   { label: "Contact", text: "Call, text, email or message", href: "/contact" },
 ];
 

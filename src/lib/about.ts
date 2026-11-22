@@ -14,12 +14,15 @@ export const story = {
   ],
 };
 
-export const founder = {
-  name: "Founder name", // TODO
-  role: "Founder & Growth Strategist",
-  photo: "", // TODO: "/team/founder.webp"
-  note: "Every free audit is reviewed personally, not by an automated tool.",
-};
+export const founders = [
+  // TODO: add surnames if you want them shown, and photos in /public/team/ (e.g. "/team/shehroz.webp")
+  { name: "Shehroz", role: "Co-founder & CEO", photo: "" },
+  { name: "Mehroz", role: "Co-founder & CEO", photo: "" },
+];
+export const foundersNote = "Every free audit is reviewed personally by one of us, not by an automated tool.";
+
+/** Blog author and the person named in structured data. */
+export const founder = founders[0];
 
 export const values = [
   { title: "Results over vanity", text: "We report calls, bookings and revenue. Not likes, impressions or jargon.", color: "#1fae55" },

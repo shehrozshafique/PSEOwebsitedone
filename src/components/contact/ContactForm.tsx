@@ -9,7 +9,7 @@ import FormConsent from "@/components/FormConsent";
 const topics = ["New project", "Free audit", "Pricing question", "I’m a current client", "Partnership", "Something else"];
 
 const input =
-  "w-full rounded-xl bg-white px-4 py-3.5 text-[15px] outline-none transition-colors placeholder:text-ink/35 focus:border-blue";
+  "w-full rounded-xl border border-ink/15 bg-paper px-4 py-3.5 text-[15px] outline-none transition-colors placeholder:text-ink/40 hover:border-ink/30 focus:border-ink focus:bg-white";
 
 export default function ContactForm() {
   const [topic, setTopic] = useState(topics[0]);

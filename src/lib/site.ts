@@ -8,11 +8,11 @@
 export const site = {
   name: "Permanent SEO", // TODO: confirm agency name (also used as the CRM name)
   platformName: "Permanent SEO Platform", // the white-label CRM, always under the agency's brand
-  phone: "+1 (555) 010-0199", // TODO: real phone
-  email: "hello@example.com", // TODO: real email
+  phone: "+44 7700 175150", // business line (connected to the CRM for calls, texts and automations)
+  email: "admin@permanentseo.com",
   rating: "4.9", // TODO: real Google rating
   audience: "local businesses and online stores", // TODO: confirm who the site is for
-  url: "https://www.example.com", // TODO: real domain (used for canonical links and SEO schema)
+  url: "https://permanentseo.com", // used for canonical links, sitemap and SEO schema
   areaServed: "United States", // TODO: country / cities you serve
   hours: "Mon–Fri, 9 AM – 6 PM", // TODO: real business hours (and time zone)
   bookingUrl: "", // TODO: CRM booking calendar link; the Book a call buttons appear once this is set

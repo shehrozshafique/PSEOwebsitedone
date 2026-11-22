@@ -2,10 +2,9 @@
 
 import { useRef } from "react";
 import Link from "next/link";
-import { motion, useMotionValue, useReducedMotion, useScroll, useSpring, useTransform } from "motion/react";
+import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 import { Words } from "@/components/motion";
 import { site } from "@/lib/site";
-import { AnimatedMark } from "@/components/brand/AnimatedMark";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -14,11 +13,6 @@ export default function Hero() {
   const ref = useRef<HTMLElement>(null);
   const reduce = useReducedMotion();
 
-  // mouse tilt
-  const mx = useMotionValue(0);
-  const my = useMotionValue(0);
-  const rx = useSpring(useTransform(my, [-0.5, 0.5], [10, -10]), { stiffness: 80, damping: 15 });
-  const ry = useSpring(useTransform(mx, [-0.5, 0.5], [-14, 14]), { stiffness: 80, damping: 15 });
 
   // scroll: the hero tips back into 3D space as you scroll away
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
@@ -26,20 +20,14 @@ export default function Hero() {
   const tilt = useTransform(scrollYProgress, [0, 1], [0, reduce ? 0 : 14]);
   const shrink = useTransform(scrollYProgress, [0, 1], [1, reduce ? 1 : 0.9]);
   const fade = useTransform(scrollYProgress, [0, 0.8], [1, reduce ? 1 : 0.2]);
-  const visualY = useTransform(scrollYProgress, [0, 1], [0, reduce ? 0 : 80]);
 
   return (
     <section
       id="top"
       ref={ref}
-      className="relative -mt-[88px] overflow-hidden bg-ink pt-[128px] pb-14 text-white sm:pt-[150px] md:pb-32"
-      onMouseMove={(e) => {
-        if (reduce) return;
-        const r = e.currentTarget.getBoundingClientRect();
-        mx.set((e.clientX - r.left) / r.width - 0.5);
-        my.set((e.clientY - r.top) / r.height - 0.5);
-      }}
+      className="relative -mt-[88px] overflow-hidden bg-ink pt-[128px] pb-20 text-white sm:pt-[150px] md:pb-36"
     >
+      <div aria-hidden="true" className="hero-grid pointer-events-none absolute inset-0" />
       <motion.div style={{ y: headY, rotateX: tilt, scale: shrink, opacity: fade, transformPerspective: 1400, transformOrigin: "50% 0%" }} className="container-x relative">
         <motion.p
           initial={{ opacity: 0, y: 10 }}
@@ -82,13 +70,6 @@ export default function Hero() {
             </motion.div>
             <p className="mt-4 text-[13px] text-white/45">Free · No obligation · <span className="whitespace-nowrap">Results in 48 hours</span></p>
           </div>
-
-          {/* The logo builds itself (same as the Loom intro), tilts with the mouse and drifts on scroll */}
-          <motion.div style={{ y: visualY }} className="relative mx-auto mt-14 w-full max-w-[340px] [perspective:1100px] sm:mt-16">
-            <motion.div style={{ rotateX: rx, rotateY: ry }}>
-              <AnimatedMark className="mx-auto w-[min(62vw,340px)]" delay={0.9} />
-            </motion.div>
-          </motion.div>
         </div>
       </motion.div>
     </section>
