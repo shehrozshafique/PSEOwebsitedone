@@ -5,6 +5,7 @@ import Link from "next/link";
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 import { Words } from "@/components/motion";
 import { site } from "@/lib/site";
+import { PeelSticker } from "@/components/brand/Stickers";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -25,7 +26,7 @@ export default function Hero() {
     <section
       id="top"
       ref={ref}
-      className="relative -mt-[88px] overflow-hidden bg-ink pt-[128px] pb-20 text-white sm:pt-[150px] md:pb-36"
+      className="relative -mt-[88px] overflow-hidden bg-ink pt-[128px] pb-32 text-white sm:pt-[150px] sm:pb-20 md:pb-36"
     >
       <div aria-hidden="true" className="hero-grid pointer-events-none absolute inset-0" />
       <motion.div style={{ y: headY, rotateX: tilt, scale: shrink, opacity: fade, transformPerspective: 1400, transformOrigin: "50% 0%" }} className="container-x relative">
@@ -70,6 +71,8 @@ export default function Hero() {
             </motion.div>
             <p className="mt-4 text-[13px] text-white/45">Free · No obligation · <span className="whitespace-nowrap">Results in 48 hours</span></p>
           </div>
+          {/* lime peel sticker: under the buttons on phones, beside them on larger screens */}
+          <PeelSticker title="48 hours" sub="is all it takes" className="absolute right-1 -bottom-[104px] size-[92px] sm:right-[2%] sm:bottom-0 md:size-[150px] lg:right-[6%]" />
         </div>
       </motion.div>
     </section>

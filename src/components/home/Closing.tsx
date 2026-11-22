@@ -5,13 +5,15 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { motion, useMotionValueEvent, useScroll, useTransform, useReducedMotion } from "motion/react";
 import { useRef } from "react";
-import { faqs, footerCompany, footerServices, process, site, testimonials } from "@/lib/site";
+import { faqs, footerCompany, footerServices, footerStart, process, site, socials, testimonials } from "@/lib/site";
+import { siInstagram, siTiktok, siX, siYoutube } from "simple-icons";
 import { Marker, Reveal } from "@/components/motion";
 import { Tilt } from "@/components/effects";
 import { Logo } from "./Header";
 import { submitLead } from "@/lib/attribution";
 import FormConsent from "@/components/FormConsent";
 import { telHref } from "@/components/MobileCta";
+import { PromiseSeal, promiseSeals } from "@/components/brand/Stickers";
 
 /** Paper: 4 step cards; a green line draws across and each step lights up as you scroll. */
 export function Process() {
@@ -192,6 +194,11 @@ export function FinalCta() {
               not an automated tool.
             </p>
           </div>
+          <ul className="mt-10 grid max-w-[520px] grid-cols-4 gap-2 sm:gap-5" aria-label="Our promises">
+            {promiseSeals.map((seal, n) => (
+              <li key={seal.big}><PromiseSeal seal={seal} index={n} /></li>
+            ))}
+          </ul>
         </div>
 
         <form
@@ -252,52 +259,125 @@ export function FinalCta() {
 }
 
 export function Footer() {
+  const legal = [
+    { label: "Privacy Policy", href: "/privacy" },
+    { label: "Terms of Service", href: "/terms" },
+    { label: "SMS Terms", href: "/sms-terms" },
+  ];
   return (
     <footer className="overflow-hidden bg-ink pt-14 text-white md:pt-20">
-      <div className="container-x grid grid-cols-2 gap-x-6 gap-y-10 border-t border-white/10 pt-12 sm:gap-12 sm:pt-14 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
-        <div className="col-span-2 lg:col-span-1">
+      <div className="container-x grid gap-12 border-t border-white/10 pt-12 sm:pt-14 lg:grid-cols-[1.25fr_2fr] lg:gap-16">
+        {/* brand, contact, socials */}
+        <div>
           <Logo light />
-          <p className="mt-5 max-w-[36ch] text-mist">
+          <p className="mt-5 max-w-[38ch] text-[15px] leading-relaxed text-mist">
             Websites, stores, Google rankings, ads and automation for {site.audience}. One team, one platform, one monthly plan.
           </p>
-          <a href={telHref} className="mt-5 block py-1 text-sm hover:text-green-soft">{site.phone}</a>
-          <a href={`mailto:${site.email}`} className="block py-1 text-sm hover:text-green-soft">{site.email}</a>
+          <ul className="mt-7 grid gap-3 text-[15px]">
+            <ContactRow href={telHref} label={site.phone} icon="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1l-2.2 2.2Z" />
+            <ContactRow href={`mailto:${site.email}`} label={site.email} icon="M3 5h18a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm1 2.4V17h16V7.4l-8 5.3-8-5.3ZM5.5 7l6.5 4.3L18.5 7h-13Z" />
+            <ContactRow label={site.hours} icon="M12 2a10 10 0 1 1 0 20 10 10 0 0 1 0-20Zm0 2a8 8 0 1 0 0 16 8 8 0 0 0 0-16Zm1 3v4.6l3.2 1.9-1 1.7L11 12.7V7h2Z" />
+          </ul>
+          <Socials />
         </div>
-        <FooterCol title="Services" items={footerServices} />
-        <FooterCol title="Company" items={footerCompany} />
-        <FooterCol title="Get started" items={[{ label: "Free audit", href: "/free-audit" }, { label: "Book a call", href: "/contact#book" }, { label: "Client login", href: "#" }, { label: "Privacy Policy", href: "/privacy" }, { label: "Terms of Service", href: "/terms" }, { label: "SMS Terms", href: "/sms-terms" }]} />
+
+        {/* link columns */}
+        <div className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3">
+          <FooterCol title="Services" items={footerServices} />
+          <FooterCol title="Company" items={footerCompany} />
+          <FooterCol title="Get started" items={footerStart} />
+        </div>
       </div>
-      <FooterWordmark />
-      <div className="container-x flex flex-wrap justify-between gap-3 border-t border-white/10 py-6 pb-[max(24px,env(safe-area-inset-bottom))] text-xs text-white/40">
-        <p>© {new Date().getFullYear()} {site.name}. All rights reserved.</p>
-        <p>Made with care for local businesses.</p>
+
+
+      <div className="mt-14 border-t border-white/10 md:mt-20">
+        <div className="container-x flex flex-col gap-4 py-6 pb-[max(24px,env(safe-area-inset-bottom))] text-sm text-white/50 md:flex-row md:items-center md:justify-between">
+          <p>© {new Date().getFullYear()} {site.name}. All rights reserved.</p>
+          <ul className="flex flex-wrap gap-x-6 gap-y-2">
+            {legal.map((l) => (
+              <li key={l.href}><Link href={l.href} className="hover:text-white">{l.label}</Link></li>
+            ))}
+          </ul>
+        </div>
       </div>
     </footer>
   );
 }
 
-function FooterWordmark() {
-  const ref = useRef<HTMLParagraphElement>(null);
-  const reduce = useReducedMotion();
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end end"] });
-  const y = useTransform(scrollYProgress, [0, 1], [reduce ? 0 : 80, 0]);
-  const rotateX = useTransform(scrollYProgress, [0, 1], [reduce ? 0 : 50, 0]);
+function ContactRow({ icon, label, href }: { icon: string; label: string; href?: string }) {
+  const body = (
+    <>
+      <span className="grid size-9 flex-none place-items-center rounded-lg bg-green/10 text-green" aria-hidden="true">
+        <svg viewBox="0 0 24 24" className="size-[18px]" fill="currentColor"><path d={icon} /></svg>
+      </span>
+      <span>{label}</span>
+    </>
+  );
   return (
-    <motion.p
-      ref={ref}
-      aria-hidden="true"
-      style={{ y, rotateX, transformPerspective: 800, transformOrigin: "50% 100%" }}
-      className="mt-16 text-center font-display text-[clamp(44px,11vw,170px)] leading-[0.85] font-black tracking-[-0.01em] whitespace-nowrap text-carbon select-none"
-    >
-      {site.name}
-    </motion.p>
+    <li>
+      {href ? <a href={href} className="flex items-center gap-3 transition-colors hover:text-green-soft">{body}</a> : <span className="flex items-center gap-3 text-mist">{body}</span>}
+    </li>
   );
 }
+
+// Official app-style icons: brand-coloured tile + white mark (Instagram uses its brand gradient).
+const LINKEDIN_IN = "M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45Z";
+const FACEBOOK_F = "M15.12 5.32H17V2.14A26 26 0 0 0 14.26 2c-2.72 0-4.58 1.66-4.58 4.7v2.62H6.61v3.56h3.07V22h3.68v-9.12h3.06l.46-3.56h-3.52V7.05c0-1.03.28-1.73 1.76-1.73Z";
+const SOCIAL: Record<string, { name: string; bg: string; glyph: React.ReactNode; scale?: number }> = {
+  instagram: {
+    name: "Instagram",
+    bg: "radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285aeb 90%)",
+    glyph: <path d={siInstagram.path} fill="#fff" />,
+  },
+  linkedin: { name: "LinkedIn", bg: "#0a66c2", glyph: <path d={LINKEDIN_IN} fill="#fff" /> },
+  x: { name: "X", bg: "#000", glyph: <path d={siX.path} fill="#fff" />, scale: 0.85 },
+  facebook: { name: "Facebook", bg: "#0866ff", glyph: <path d={FACEBOOK_F} fill="#fff" />, scale: 1.1 },
+  tiktok: {
+    name: "TikTok",
+    bg: "#000",
+    glyph: (
+      <>
+        <path d={siTiktok.path} fill="#25f4ee" transform="translate(-0.9 -0.7)" />
+        <path d={siTiktok.path} fill="#fe2c55" transform="translate(0.9 0.7)" />
+        <path d={siTiktok.path} fill="#fff" />
+      </>
+    ),
+  },
+  youtube: { name: "YouTube", bg: "#ff0000", glyph: <path d={siYoutube.path} fill="#fff" />, scale: 1.05 },
+};
+
+function Socials() {
+  return (
+    <ul className="mt-7 flex flex-wrap gap-3" aria-label="Social media">
+      {socials.map(({ platform, url }) => {
+        const s = SOCIAL[platform];
+        const k = s.scale ?? 1;
+        const tile = (
+          <span className="grid size-6 place-items-center rounded-[6px] shadow-[inset_0_0_0_1px_rgb(255_255_255/0.08)]" style={{ background: s.bg }}>
+            <svg viewBox="0 0 24 24" className="size-[14px] overflow-visible" aria-hidden="true">
+              <g transform={`translate(12 12) scale(${k}) translate(-12 -12)`}>{s.glyph}</g>
+            </svg>
+          </span>
+        );
+        return (
+          <li key={platform}>
+            {url ? (
+              <a href={url} target="_blank" rel="noopener noreferrer" aria-label={`${site.name} on ${s.name}`} className="-m-1.5 block p-1.5 transition-transform hover:-translate-y-0.5">{tile}</a>
+            ) : (
+              <span title={`${s.name} (coming soon)`} className="block">{tile}<span className="sr-only">{s.name}</span></span>
+            )}
+          </li>
+        );
+      })}
+    </ul>
+  );
+}
+
 
 function FooterCol({ title, items }: { title: string; items: { label: string; href: string }[] }) {
   return (
     <div>
-      <p className="font-display font-bold">{title}</p>
+      <p className="font-display text-[15px] font-bold tracking-wide text-white">{title}</p>
       <ul className="mt-3 grid gap-0.5 text-[15px] text-mist md:mt-4 md:text-base">
         {items.map((x) => (
           <li key={x.label}><a href={x.href} className="block py-1.5 hover:text-white">{x.label}</a></li>

@@ -35,6 +35,8 @@ function readAttribution(): Attribution {
   }
 }
 
+export const LEAD_SENT_KEY = "ps_lead_sent";
+
 /** Send a form to /api/lead. Returns an error message for the visitor, or null on success. */
 export async function submitLead(fields: Omit<LeadInput, keyof Attribution | "page">): Promise<string | null> {
   try {
@@ -45,6 +47,11 @@ export async function submitLead(fields: Omit<LeadInput, keyof Attribution | "pa
     });
     const json = await res.json().catch(() => ({}));
     if (!res.ok || !json.ok) return json.error || "Something went wrong. Please try again.";
+    try {
+      localStorage.setItem(LEAD_SENT_KEY, "1"); // the popup never shows to people who already got in touch
+    } catch {
+      /* private mode */
+    }
     return null;
   } catch {
     return "No connection. Please check your internet and try again.";

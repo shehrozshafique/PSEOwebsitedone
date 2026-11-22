@@ -6,6 +6,7 @@ import AttributionCapture from "@/components/AttributionCapture";
 import { ScrollProgress } from "@/components/effects";
 import { site } from "@/lib/site";
 import MobileCta from "@/components/MobileCta";
+import LeadPopup from "@/components/LeadPopup";
 import type { Viewport } from "next";
 
 export const viewport: Viewport = { themeColor: "#0a0b0a", viewportFit: "cover" };
@@ -31,6 +32,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <ScrollProgress />
         {children}
         <MobileCta />
+        <LeadPopup />
       </body>
     </html>
   );

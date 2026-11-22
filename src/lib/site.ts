@@ -133,8 +133,22 @@ export const footerServices = [
 export const footerCompany = [
   { label: "About", href: "/about" },
   { label: "Our work", href: "/work" },
-  { label: "Platform", href: "/pricing" },
-  { label: "Pricing", href: "/pricing" },
   { label: "Blog", href: "/blog" },
   { label: "Contact", href: "/contact" },
+];
+export const footerStart = [
+  { label: "Free audit", href: "/free-audit" },
+  { label: "Pricing", href: "/pricing" },
+  { label: "Book a call", href: "/contact#book" },
+  { label: "Client login", href: "#login" },
+];
+
+/** Social profiles shown in the footer. TODO: paste your profile links; an icon only becomes a link once its url is set. */
+export const socials: { platform: "instagram" | "linkedin" | "x" | "facebook" | "tiktok" | "youtube"; url: string }[] = [
+  { platform: "instagram", url: "" },
+  { platform: "linkedin", url: "" },
+  { platform: "x", url: "" },
+  { platform: "facebook", url: "" },
+  { platform: "tiktok", url: "" },
+  { platform: "youtube", url: "" },
 ];

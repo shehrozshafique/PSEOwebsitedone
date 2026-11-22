@@ -1,7 +1,7 @@
 /** Shared lead shape for every form on the site. */
 
 export type LeadInput = {
-  form: "free-audit-page" | "homepage-cta" | "contact-page";
+  form: "free-audit-page" | "homepage-cta" | "contact-page" | "popup";
   name: string;
   phone: string;
   email?: string;
@@ -27,7 +27,7 @@ export type LeadInput = {
 
 const MAX = 300;
 const clean = (v: unknown, max = MAX) => (typeof v === "string" ? v.trim().slice(0, max) : undefined);
-const FORMS = ["free-audit-page", "homepage-cta", "contact-page"] as const;
+const FORMS = ["free-audit-page", "homepage-cta", "contact-page", "popup"] as const;
 
 export type Validated = { ok: true; lead: LeadInput } | { ok: false; error: string; spam?: boolean };
 

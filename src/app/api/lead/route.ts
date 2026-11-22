@@ -20,7 +20,7 @@ function splitName(full: string) {
 }
 
 function tagsFor(l: LeadInput) {
-  const formTag = { "free-audit-page": "free audit", "homepage-cta": "homepage form", "contact-page": "contact form" }[l.form];
+  const formTag = { "free-audit-page": "free audit", "homepage-cta": "homepage form", "contact-page": "contact form", popup: "popup form" }[l.form];
   return ["website lead", formTag, l.businessType && `type: ${l.businessType}`, l.goal && `goal: ${l.goal}`, l.topic && `topic: ${l.topic}`].filter(
     Boolean,
   ) as string[];
