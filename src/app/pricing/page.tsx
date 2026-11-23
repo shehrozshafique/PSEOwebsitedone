@@ -22,7 +22,7 @@ const faqs = [
   { q: "Is the website really included?", a: "Yes. The Starter Bundle includes a 5-page Starter website, and Growth and Scale include the Business website with full tracking setup. On its own, a Starter website is a one-time build plus hosting." },
   { q: "What is the Starter Bundle?", a: "A website, review automation and an email marketing platform in one monthly price, with the website build and setup included. It is how most businesses start with us, and you can move up to a Growth package anytime." },
   { q: "Do you charge in pounds or dollars?", a: "Both. UK businesses are billed in pounds, everyone else in dollars. Use the switch at the top of the page to see either." },
-  { q: "How do I pay?", a: "Pick a package and we send a secure payment link. Monthly plans are billed each month; pay yearly to save 20%." },
+  { q: "How do I pay?", a: "Pick a package and we send a secure payment link. Monthly plans are billed each month; pay yearly to save 12%." },
 ];
 
 export default function PricingPage() {

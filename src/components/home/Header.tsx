@@ -89,7 +89,7 @@ function ServicesPanel({ close }: { close: () => void }) {
         <li>
           <Link href="/pricing" onClick={close} className="group flex h-full flex-col justify-between rounded-2xl bg-ink p-4 text-white">
             <span className="font-display text-lg font-bold">See all pricing</span>
-            <span className="mt-1 block text-[13px] leading-snug text-mist">Growth packages and single services. Save 20% yearly.</span>
+            <span className="mt-1 block text-[13px] leading-snug text-mist">Growth packages and single services. Save 12% yearly.</span>
             <span className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-green-soft">
               Compare plans <span aria-hidden="true" className="transition-transform group-hover:translate-x-1">→</span>
             </span>

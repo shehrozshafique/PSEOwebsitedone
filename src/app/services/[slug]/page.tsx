@@ -155,7 +155,7 @@ export default async function ServicePage({ params }: Props) {
                 <Reveal className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
                   <div className="max-w-2xl">
                     <h2 className="h-display text-[clamp(36px,5vw,60px)]">Plans & pricing</h2>
-                    <p className="mt-3 text-slate">Monthly plans: 6-month minimum, then month to month. Pay yearly and save 20%.</p>
+                    <p className="mt-3 text-slate">Monthly plans: 6-month minimum, then month to month. Pay yearly and save 12%.</p>
                   </div>
                   {plans.some((o) => o.tiers.some((t) => t.billing === "monthly")) && <BillingToggle />}
                 </Reveal>

@@ -3,14 +3,14 @@
  * Prices are set in both dollars and pounds (not converted, so they stay round numbers).
  * UK visitors see £, everyone else sees $ (see lib/currency.tsx).
  *
- * Monthly plans: 6-month minimum, then month to month. Pay yearly and save 20%.
+ * Monthly plans: 6-month minimum, then month to month. Pay yearly and save 12%.
  * One-time prices (website builds) are never discounted.
  */
 
 export type Money = { usd: number; gbp: number };
 export type Currency = "usd" | "gbp";
 
-export const YEARLY_DISCOUNT = 0.2; // 20% off when paid yearly
+export const YEARLY_DISCOUNT = 0.12; // 12% off when paid yearly
 export const MIN_TERM = "6-month minimum, then month to month";
 
 /** Honest capacity: how many new package clients you take each month. */
@@ -225,8 +225,8 @@ export const offers: Offer[] = [
         price: { usd: 79, gbp: 65 },
         billing: "monthly",
         blurb: "For bigger lists, more sends and SMS.",
-        features: ["Up to 15,000 contacts", "Everything in Essential", "SMS campaigns", "A/B testing", "Advanced segments & reports"],
-        note: "Bigger list? See your price in the calculator below",
+        features: ["Unlimited contacts, one flat price", "Everything in Essential", "SMS campaigns", "A/B testing", "Advanced segments & reports"],
+        note: "Your price never goes up as your list grows",
         cta: "Start Growth",
       },
       {
@@ -234,7 +234,7 @@ export const offers: Offer[] = [
         price: { usd: 397, gbp: 317 },
         billing: "monthly",
         blurb: "We run your email marketing for you, from plan to send.",
-        features: ["Platform included (up to 15,000 contacts)", "List import & clean-up", "Welcome, abandoned cart & win-back flows built", "4 campaigns a month, written & designed", "Monthly revenue report"],
+        features: ["Platform included, unlimited contacts", "List import & clean-up", "Welcome, abandoned cart & win-back flows built", "4 campaigns a month, written & designed", "Monthly revenue report"],
         popular: true,
         cta: "Run my email for me",
       },
@@ -414,15 +414,10 @@ export const competitorPrices: Record<string, (number | null)[]> = {
   Omnisend: [81, 132, 207, 282, 338, 413, 650, 900, 1456],
   Mailchimp: [100, 135, 230, 310, 340, 450, 630, 800, null],
 };
-/** Our platform price by list size (sends included: up to 6 emails per contact a month). */
+/** Our platform price by list size: Essential up to 6,000, then Growth with unlimited contacts (up to 6 emails per contact a month). */
 export const emailListPrices: { upTo: number; price: Money }[] = [
   { upTo: 6000, price: { usd: 49, gbp: 39 } },
-  { upTo: 15000, price: { usd: 79, gbp: 65 } },
-  { upTo: 30000, price: { usd: 179, gbp: 143 } },
-  { upTo: 50000, price: { usd: 279, gbp: 223 } },
-  { upTo: 75000, price: { usd: 379, gbp: 303 } },
-  { upTo: 100000, price: { usd: 499, gbp: 399 } },
-  { upTo: 150000, price: { usd: 749, gbp: 599 } },
+  { upTo: Infinity, price: { usd: 79, gbp: 65 } },
 ];
 /** Our platform price for a list size (USD, to compare like with like). */
 export const ourEmailPrice = (contacts: number) => (emailListPrices.find((t) => contacts <= t.upTo) ?? emailListPrices[emailListPrices.length - 1]).price.usd;

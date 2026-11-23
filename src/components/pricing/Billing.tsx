@@ -36,7 +36,7 @@ export function BillingProvider({ children }: { children: ReactNode }) {
 
 function Pill({ on, onClick, children }: { on: boolean; onClick: () => void; children: ReactNode }) {
   return (
-    <button type="button" role="radio" aria-checked={on} onClick={onClick} className={`relative z-10 flex items-center gap-2 rounded-full px-4 py-2.5 text-sm font-semibold transition-colors sm:px-5 ${on ? "text-white" : "text-slate"}`}>
+    <button type="button" role="radio" aria-checked={on} onClick={onClick} className={`relative z-10 flex items-center gap-2 rounded-full px-4 py-2.5 text-sm font-semibold transition-colors sm:px-5 ${on ? "text-white" : "bg-mint text-ink hover:bg-green/25"}`}>
       {on && <span className="absolute inset-0 -z-10 rounded-full bg-ink" />}
       {children}
     </button>
@@ -49,7 +49,7 @@ export function BillingToggle() {
   const [cur, setCur] = useCurrency();
   return (
     <div className="flex flex-wrap items-center justify-center gap-3">
-      <div role="radiogroup" aria-label="Billing period" className="inline-flex rounded-full bg-paper p-1">
+      <div role="radiogroup" aria-label="Billing period" className="inline-flex gap-1 rounded-full bg-white p-1 shadow-sm">
         <Pill on={!yearlyOn} onClick={() => setYearly(false)}>Monthly</Pill>
         <Pill on={yearlyOn} onClick={() => setYearly(true)}>
           Yearly <span className={`text-xs font-bold ${yearlyOn ? "text-green-soft" : "text-green-ink"}`}>Save {Math.round(YEARLY_DISCOUNT * 100)}%</span>
@@ -62,7 +62,7 @@ export function BillingToggle() {
 
 export function CurrencySwitch({ cur, setCur }: { cur: Currency; setCur: (c: Currency) => void }) {
   return (
-    <div role="radiogroup" aria-label="Currency" className="inline-flex rounded-full bg-paper p-1">
+    <div role="radiogroup" aria-label="Currency" className="inline-flex gap-1 rounded-full bg-white p-1 shadow-sm">
       <Pill on={cur === "usd"} onClick={() => setCur("usd")}>$ USD</Pill>
       <Pill on={cur === "gbp"} onClick={() => setCur("gbp")}>£ GBP</Pill>
     </div>
@@ -117,14 +117,14 @@ const contactHref = (plan: string) => `/contact?plan=${encodeURIComponent(plan)}
 export function OfferPlans({ offer }: { offer: Offer }) {
   const { yearlyOn } = useContext(Ctx);
   const n = offer.tiers.length;
-  const cols = n >= 3 ? "md:grid-cols-3" : n === 2 ? "md:grid-cols-2" : "md:max-w-[520px]";
+  const cols = n >= 3 ? "md:grid-cols-3" : n === 2 ? "md:grid-cols-2" : "mx-auto w-full md:max-w-[520px]";
   return (
     <div className={`grid gap-4 ${cols}`}>
       {offer.tiers.map((t) => {
         const dark = !!t.popular;
         const plan = `${offer.title}: ${t.name}${t.billing === "monthly" && yearlyOn ? " (yearly)" : ""}`;
         return (
-          <div key={t.name} className={`relative flex h-full flex-col rounded-2xl p-6 sm:p-7 ${dark ? "bg-ink text-white" : "bg-paper text-ink"}`}>
+          <div key={t.name} className={`relative flex h-full flex-col rounded-2xl p-6 sm:p-7 ${dark ? "bg-ink text-white" : "bg-mint/70 text-ink"}`}>
             <div className="flex items-start justify-between gap-3">
               <h3 className="font-display text-xl font-bold">{t.name}</h3>
               {t.popular && n > 1 && <span className="text-sm font-semibold whitespace-nowrap text-green-soft">Most popular</span>}
@@ -160,7 +160,7 @@ export function PackagePlans() {
       {packages.map((p) => {
         const dark = !!p.popular;
         return (
-          <div key={p.key} className={`relative flex h-full flex-col rounded-2xl p-6 sm:p-8 ${dark ? "bg-ink text-white lg:-my-4 lg:py-12" : "bg-paper text-ink"}`}>
+          <div key={p.key} className={`relative flex h-full flex-col rounded-2xl p-6 sm:p-8 ${dark ? "bg-ink text-white lg:-my-4 lg:py-12" : "bg-mint/70 text-ink"}`}>
             <div className="flex items-start justify-between gap-3">
               <h3 className="font-display text-2xl font-extrabold">{p.name}</h3>
               {p.popular && <span className="text-sm font-semibold text-green-soft">Most popular</span>}
@@ -323,7 +323,7 @@ export function EmailSavings() {
       <div className="grid gap-8 lg:grid-cols-2 lg:gap-12">
         <div>
           <h3 className="font-display text-2xl font-bold md:text-3xl">The bigger your list, the more you save</h3>
-          <p className="mt-2 text-[15px] text-mist">Big email tools charge more for every contact you add. Our price grows slowly, so a growing list never punishes you. Move the slider to your list size.</p>
+          <p className="mt-2 text-[15px] text-mist">Big email tools charge more for every contact you add. Our Growth plan is one flat price with unlimited contacts, so a growing list never costs you more. Move the slider to your list size.</p>
           <label className="mt-7 block">
             <span className="flex items-baseline justify-between text-sm text-mist">
               Contacts <b className="font-display text-2xl font-black text-white">{n(contacts)}</b>
