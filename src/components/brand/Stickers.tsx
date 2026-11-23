@@ -19,7 +19,8 @@ export function PeelSticker({ title, sub, className = "", delay = 1.1 }: { title
     <motion.div
       className={`pointer-events-auto select-none ${className}`}
       initial={reduce ? false : { opacity: 0, scale: 1.5, rotate: -30 }}
-      animate={{ opacity: 1, scale: 1, rotate: -12 }}
+      whileInView={{ opacity: 1, scale: 1, rotate: -12 }}
+      viewport={{ once: true, margin: "-80px" }}
       whileHover={reduce ? undefined : { rotate: -4, scale: 1.04 }}
       transition={{ type: "spring", stiffness: 260, damping: 16, delay }}
       role="img"
@@ -61,12 +62,12 @@ const EDGE = scallop();
 
 export type Seal = { big: string; small?: string; ring: string; color: string };
 
-export function PromiseSeal({ seal, index = 0 }: { seal: Seal; index?: number }) {
+export function PromiseSeal({ seal, index = 0, className = "aspect-square w-full max-w-[112px]" }: { seal: Seal; index?: number; className?: string }) {
   const id = useId().replace(/:/g, "");
   const reduce = useReducedMotion();
   return (
     <motion.div
-      className="aspect-square w-full max-w-[112px]"
+      className={className}
       initial={reduce ? false : { opacity: 0, scale: 0.7, rotate: -25 }}
       whileInView={{ opacity: 1, scale: 1, rotate: index % 2 ? 6 : -6 }}
       whileHover={reduce ? undefined : { rotate: 0, scale: 1.06 }}

@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import Header from "@/components/home/Header";
 import { FinalCta, Footer } from "@/components/home/Closing";
 import { CopyLink, Toc } from "@/components/blog/Toc";
-import { Cover, InlineCta, Meta, PostBody, PostCard, Rich } from "@/components/blog/parts";
+import { FeatureImage, InlineCta, Meta, PostBody, PostCard, Rich } from "@/components/blog/parts";
 import { categories, formatDate, getPost, posts, readingMinutes, relatedTo, toc } from "@/lib/blog";
 import { servicesData } from "@/lib/services";
 import { founder } from "@/lib/about";
@@ -25,6 +25,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description: p.description,
     alternates: { canonical: `/blog/${p.slug}` },
     openGraph: { type: "article", title: p.title, description: p.description, publishedTime: p.date, modifiedTime: p.updated ?? p.date },
+    twitter: { card: "summary_large_image", title: p.title, description: p.description },
   };
 }
 
@@ -95,8 +96,8 @@ export default async function PostPage({ params }: Props) {
               </div>
               <Meta post={post} />
             </div>
-            <div className="mt-10 aspect-[16/9] overflow-hidden rounded-[20px] md:aspect-[21/8]">
-              <Cover category={post.category} size="lg" priority />
+            <div className="mt-10 max-w-[960px] overflow-hidden rounded-[20px]">
+              <FeatureImage post={post} priority sizes="(min-width: 1024px) 960px, 100vw" />
             </div>
           </div>
         </header>

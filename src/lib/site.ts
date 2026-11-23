@@ -79,10 +79,10 @@ export const stages = [
 
 // TODO: replace with verified client results
 export const stats = [
-  { value: 3, suffix: "×", label: "more calls for local clients after 90 days", bg: "#ffffff" },
-  { value: 68, suffix: "%", label: "average lift in online store revenue from email & SMS", bg: "#ffd9ec" },
-  { value: 60, suffix: "s", label: "to reply to every new lead, day or night", bg: "#cfe6ff" },
-  { value: 4.9, suffix: "★", label: "average rating from our clients", bg: "#e7e0ff", decimals: 1 },
+  { lead: "Up to", value: 3, suffix: "×", label: "more calls for local clients after 90 days", bg: "#ffffff" },
+  { lead: "Average", value: 68, suffix: "%", label: "lift in online store revenue from email & SMS", bg: "#ffd9ec" },
+  { lead: "Under", value: 60, suffix: "s", label: "to reply to every new lead, day or night", bg: "#cfe6ff" },
+  { lead: "Rated", value: 4.9, suffix: "★", label: "average rating from our clients", bg: "linear-gradient(135deg, #8cf08b 0%, #72e582 45%, #56c76c 100%)", decimals: 1 },
 ];
 
 export const services = [

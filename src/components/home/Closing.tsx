@@ -194,8 +194,8 @@ export function FinalCta() {
               not an automated tool.
             </p>
           </div>
-          <ul className="mt-10 grid max-w-[520px] grid-cols-4 gap-2 sm:gap-5" aria-label="Our promises">
-            {promiseSeals.map((seal, n) => (
+          <ul className="mt-10 grid max-w-[390px] grid-cols-3 gap-3 sm:gap-5" aria-label="Our promises">
+            {promiseSeals.filter((s) => s.big !== "100%").map((seal, n) => (
               <li key={seal.big}><PromiseSeal seal={seal} index={n} /></li>
             ))}
           </ul>
@@ -221,7 +221,7 @@ export function FinalCta() {
             }
             router.push("/thank-you");
           }}
-          className="glass-dark rounded-2xl p-5 sm:p-7 md:rounded-2xl md:p-9"
+          className="glass-dark relative mt-8 rounded-2xl p-5 sm:p-7 md:rounded-2xl md:p-9 lg:mt-0"
         >
           {sent ? (
             <div className="py-10 text-center">

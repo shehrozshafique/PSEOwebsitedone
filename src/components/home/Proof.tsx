@@ -30,10 +30,11 @@ export function Numbers() {
               whileInView={{ opacity: 1, y: 0, rotate: i % 2 ? 2 : -2 }}
               viewport={{ once: true, margin: "-80px" }}
               transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-              className="rounded-2xl p-5 text-ink shadow-[0_30px_60px_-30px_rgba(0,0,0,.9)] sm:p-8 md:sticky md:rounded-2xl"
+              className="rounded-[20px] p-5 text-[#03150a] shadow-[0_30px_60px_-30px_rgba(0,0,0,.9)] sm:p-8 md:sticky md:rounded-[28px]"
               style={{ background: s.bg, top: `${130 + i * 24}px` }}
             >
-              <p className="font-display text-[clamp(40px,7vw,88px)] leading-none font-black tracking-[-0.01em]">
+              <p className="font-display text-base leading-none font-bold sm:text-xl md:text-2xl">{s.lead}</p>
+              <p className="mt-1 font-display text-[clamp(40px,7vw,88px)] leading-none font-black tracking-[-0.01em] md:mt-2">
                 <CountUp to={s.value} decimals={s.decimals ?? 0} suffix={s.suffix} />
               </p>
               <p className="mt-4 text-sm leading-snug sm:text-base md:mt-10 md:text-lg">{s.label}</p>

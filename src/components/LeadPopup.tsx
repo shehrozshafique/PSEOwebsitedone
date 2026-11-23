@@ -5,7 +5,6 @@ import { usePathname, useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
 import FormConsent from "@/components/FormConsent";
 import { LEAD_SENT_KEY, submitLead } from "@/lib/attribution";
-import { PeelSticker } from "@/components/brand/Stickers";
 
 const SNOOZE_KEY = "ps_popup_until";
 const SNOOZE_DAYS = 7;
@@ -130,7 +129,6 @@ export default function LeadPopup() {
                     ))}
                   </ul>
                 </div>
-                <PeelSticker title="Free" sub="in 48 hours" delay={0.3} className="absolute right-4 bottom-5 size-[118px]" />
               </div>
 
               {/* form */}

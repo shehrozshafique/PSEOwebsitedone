@@ -4,7 +4,7 @@ import Header from "@/components/home/Header";
 import { FinalCta, Footer } from "@/components/home/Closing";
 import { Reveal } from "@/components/motion";
 import { categories, categoryKeys, posts, postsIn, type CategoryKey } from "@/lib/blog";
-import { CategoryNav, Cover, Meta, PostCard } from "./parts";
+import { CategoryNav, FeatureImage, Meta, PostCard } from "./parts";
 
 /** /blog and /blog/category/[category]. */
 export default function BlogIndex({ active }: { active?: CategoryKey }) {
@@ -40,8 +40,8 @@ export default function BlogIndex({ active }: { active?: CategoryKey }) {
             {featured && (
               <Reveal>
                 <article className="group relative grid gap-6 md:grid-cols-[1.1fr_.9fr] md:items-center md:gap-12">
-                  <div className="aspect-[16/11] overflow-hidden rounded-[20px]">
-                    <Cover category={featured.category} size="lg" priority />
+                  <div className="overflow-hidden rounded-[20px]">
+                    <FeatureImage post={featured} priority sizes="(min-width: 768px) 640px, 100vw" />
                   </div>
                   <div>
                     <Meta post={featured} />

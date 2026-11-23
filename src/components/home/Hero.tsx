@@ -5,7 +5,7 @@ import Link from "next/link";
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 import { Words } from "@/components/motion";
 import { site } from "@/lib/site";
-import { PeelSticker } from "@/components/brand/Stickers";
+import { PromiseSeal, promiseSeals } from "@/components/brand/Stickers";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -71,8 +71,10 @@ export default function Hero() {
             </motion.div>
             <p className="mt-4 text-[13px] text-white/45">Free · No obligation · <span className="whitespace-nowrap">Results in 48 hours</span></p>
           </div>
-          {/* lime peel sticker: under the buttons on phones, beside them on larger screens */}
-          <PeelSticker title="48 hours" sub="is all it takes" className="absolute right-1 -bottom-[104px] size-[92px] sm:right-[2%] sm:bottom-0 md:size-[150px] lg:right-[6%]" />
+          {/* "100% yours" seal: under the buttons on phones, beside them on larger screens */}
+          <div className="absolute right-2 -bottom-[100px] w-[88px] sm:right-[3%] sm:bottom-0 md:w-[130px] lg:right-[7%]">
+            <PromiseSeal seal={promiseSeals.find((s) => s.big === "100%")!} index={1} className="aspect-square w-full" />
+          </div>
         </div>
       </motion.div>
     </section>

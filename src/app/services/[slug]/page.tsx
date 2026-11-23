@@ -62,38 +62,37 @@ export default async function ServicePage({ params }: Props) {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <Header dark={false} />
+      <Header />
       <main style={{ ["--c" as string]: s.color }}>
-        {/* HERO (light, glow in the service color) */}
-        <section className="relative overflow-hidden bg-white pt-12 pb-20 md:pt-20 md:pb-28">
+        {/* HERO: dark with the green grid (matches the homepage), 3D service icon, key facts */}
+        <section className="relative -mt-[88px] overflow-hidden bg-ink pt-[128px] pb-14 text-white sm:pt-[150px] md:pb-20">
+          <div aria-hidden="true" className="hero-grid pointer-events-none absolute inset-0" />
           <div className="container-x relative">
-            <Link href="/#services" className="text-sm text-slate inline-flex items-center gap-1.5 hover:text-ink">← All services</Link>
-            <div className="mt-10 grid items-center gap-12 lg:grid-cols-[1.25fr_.75fr]">
+            <div className="grid items-center gap-10 lg:grid-cols-[1.3fr_.7fr]">
               <div>
-                <p className="inline-flex items-center gap-2 rounded-full bg-white/70 px-3.5 py-1.5 text-[13px] text-slate">
-                  <span className="size-2 rounded-full" style={{ background: s.color }} aria-hidden="true" />
-                  {s.name} · part of the <span className="font-medium text-ink">{s.stage}</span> stage
-                </p>
-                <h1 className="h-display mt-6 text-[clamp(42px,6vw,80px)] font-black">
+                <h1 className="h-display text-[clamp(40px,5.8vw,78px)] font-black">
                   {s.headline}
-                  <span className="block font-normal text-slate">{s.headlineLite}</span>
+                  <span className="block font-normal text-green-soft">{s.headlineLite}</span>
                 </h1>
-                <p className="mt-5 max-w-[56ch] text-[17px] text-slate sm:mt-6 sm:text-lg">{s.intro}</p>
+                <p className="mt-5 max-w-[56ch] text-[17px] text-mist sm:mt-6 sm:text-lg">{s.intro}</p>
                 <div className="mt-8 grid gap-3 sm:flex sm:flex-wrap">
                   <Link href="/free-audit" className="btn-green">Get my free audit →</Link>
-                  <a href="#included" className="btn-outline">What’s included</a>
+                  <a href="#included" className="btn-outline-light">What’s included</a>
                 </div>
+                <p className="mt-5 text-[13px] text-white/55">
+                  <span className="text-amber" aria-hidden="true">★★★★★</span> <b className="font-semibold text-white">{site.rating}</b> on Google · Free audit in 48 hours
+                </p>
               </div>
-              <div className="relative mx-auto grid aspect-square w-full max-w-[240px] place-items-center sm:max-w-[380px]">
-                <Image src={`/graphics/icons/${s.icon}.webp`} alt="" width={480} height={480} priority className="animate-float relative w-[78%] drop-shadow-[0_40px_50px_rgba(0,0,0,.2)]" />
+              <div className="relative mx-auto hidden aspect-square w-full max-w-[380px] place-items-center sm:grid">
+                <Image src={`/graphics/icons/${s.icon}.webp`} alt="" width={480} height={480} priority className="animate-float relative w-[80%] drop-shadow-[0_40px_50px_rgba(0,0,0,.55)]" />
               </div>
             </div>
-            <dl className="mt-14 grid gap-4 sm:grid-cols-3">
+            <dl className="mt-12 grid grid-cols-3 gap-4 border-t border-white/10 pt-8 md:mt-16">
               {s.facts.map((f) => (
-                <div key={f.label} className="glass-light rounded-2xl px-6 py-5">
+                <div key={f.label}>
                   <dt className="sr-only">{f.label}</dt>
-                  <dd className="font-display text-3xl font-black">{f.value}</dd>
-                  <dd className="mt-1 text-sm text-slate">{f.label}</dd>
+                  <dd className="font-display text-[clamp(26px,3.4vw,40px)] leading-none font-black">{f.value}</dd>
+                  <dd className="mt-2 text-[13px] leading-snug text-mist sm:text-sm">{f.label}</dd>
                 </div>
               ))}
             </dl>
