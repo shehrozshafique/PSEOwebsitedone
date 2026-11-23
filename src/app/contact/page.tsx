@@ -20,9 +20,50 @@ const ways = [
   { label: "Email us", value: site.email, href: `mailto:${site.email}`, note: "We reply within 1 business day", icon: "M3 5h18v14H3zM3 6l9 7 9-7", color: "#8b6bff" },
 ];
 
+const markets = [
+  { code: "uk", name: "United Kingdom", note: "Billed in pounds (£)" },
+  { code: "us", name: "United States", note: "Billed in dollars ($)" },
+] as const;
+
+const details: { label: string; value: string; href?: string }[] = [
+  { label: "Business", value: site.name },
+  { label: "Website", value: site.url.replace(/^https?:\/\//, ""), href: site.url },
+  { label: "Phone", value: site.phone, href: `tel:${tel}` },
+  { label: "Email", value: site.email, href: `mailto:${site.email}` },
+  { label: "Hours", value: site.hours },
+  { label: "Serving", value: "UK and US, remote-first" },
+  // registered details show once they are filled in site.ts
+  ...(site.companyNumber ? [{ label: "Registered", value: `${site.legalName}, no. ${site.companyNumber}` }] : []),
+];
+
+/** Small flat flags (no emoji, so they look the same on every device). */
+function Flag({ code }: { code: "uk" | "us" }) {
+  return (
+    <svg viewBox="0 0 60 40" className="h-8 w-12 flex-none overflow-hidden rounded-md" aria-hidden="true">
+      {code === "uk" ? (
+        <>
+          <rect width="60" height="40" fill="#012169" />
+          <path d="M0 0 60 40M60 0 0 40" stroke="#fff" strokeWidth="8" />
+          <path d="M0 0 60 40M60 0 0 40" stroke="#C8102E" strokeWidth="3" />
+          <path d="M30 0v40M0 20h60" stroke="#fff" strokeWidth="12" />
+          <path d="M30 0v40M0 20h60" stroke="#C8102E" strokeWidth="7" />
+        </>
+      ) : (
+        <>
+          <rect width="60" height="40" fill="#fff" />
+          {[0, 2, 4, 6, 8, 10, 12].map((i) => (
+            <rect key={i} y={(i * 40) / 13} width="60" height={40 / 13} fill="#B22234" />
+          ))}
+          <rect width="26" height={(40 * 7) / 13} fill="#3C3B6E" />
+        </>
+      )}
+    </svg>
+  );
+}
+
 const faqs = [
   { q: "How fast do you reply?", a: "Within one business day, usually the same day. Texts and calls during business hours get the fastest answer." },
-  { q: "Do you work with businesses outside your area?", a: `Yes. We work with ${site.audience} across ${site.areaServed}, mostly over video calls.` },
+  { q: "Do you work with businesses outside your area?", a: `Yes. We work with ${site.audience} across the UK and the US, mostly over video calls. UK clients are billed in pounds, US clients in dollars.` },
   { q: "I’m a current client. Where do I get support?", a: "Message us here and choose “I’m a current client”, or reply in your client app. You’ll reach the team working on your account." },
 ];
 
@@ -32,7 +73,7 @@ export default function ContactPage() {
     "@type": "ContactPage",
     name: `Contact ${site.name}`,
     url: `${site.url}/contact`,
-    mainEntity: { "@type": "Organization", name: site.name, telephone: site.phone, email: site.email, areaServed: site.areaServed },
+    mainEntity: { "@type": "Organization", name: site.name, url: site.url, telephone: site.phone, email: site.email, areaServed: site.areaServed.map((name) => ({ "@type": "Country", name })) },
   };
 
   return (
@@ -75,44 +116,68 @@ export default function ContactPage() {
           </div>
         </section>
 
-        {/* BOOK A CALL / AUDIT (dark band) */}
-        <section id="book" className="relative scroll-mt-24 overflow-hidden bg-ink py-24 text-white md:py-28">
-          <div className="container-x relative grid items-center gap-10 lg:grid-cols-[1.2fr_.8fr]">
+        {/* BOOK A CALL + BUSINESS DETAILS (dark band) */}
+        <section id="book" className="relative scroll-mt-24 overflow-hidden bg-ink py-20 text-white md:py-28">
+          <div className="container-x relative grid items-center gap-12 lg:grid-cols-[1.05fr_.95fr] lg:gap-16">
             <Reveal>
               <h2 className="h-display text-[clamp(36px,5vw,64px)]">
-                Book a 20-minute call
+                Book a <span className="whitespace-nowrap">20-minute</span> call
                 <span className="block font-normal text-green-soft">Or start with a free audit</span>
               </h2>
-              <p className="mt-5 max-w-[50ch] text-lg text-mist">
-                We’ll look at where your calls come from today and what would bring more. You leave with a clear next step either way.
+              <p className="mt-5 max-w-[48ch] text-lg text-mist">
+                We’ll look at where your calls and orders come from today and what would bring more. You leave with a clear next step either way.
               </p>
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                {site.bookingUrl ? (
+                  <a href={site.bookingUrl} className="btn-green">Pick a time →</a>
+                ) : (
+                  <a href={`tel:${tel}`} className="btn-green">Call {site.phone}</a>
+                )}
+                <Link href="/free-audit" className="btn-outline-light">Get my free audit</Link>
+              </div>
+
+              <p className="mt-12 text-sm font-semibold text-mist">We work with businesses in</p>
+              <ul className="mt-3 grid gap-3 sm:grid-cols-2">
+                {markets.map((m) => (
+                  <li key={m.name} className="flex items-center gap-4 rounded-2xl bg-white/[0.06] p-4">
+                    <Flag code={m.code} />
+                    <span>
+                      <span className="block font-display text-lg font-bold">{m.name}</span>
+                      <span className="block text-sm text-mist">{m.note}</span>
+                    </span>
+                  </li>
+                ))}
+              </ul>
             </Reveal>
-            <Reveal delay={0.1} className="flex flex-col gap-3 lg:items-end">
-              {site.bookingUrl ? (
-                <a href={site.bookingUrl} className="btn-green w-full lg:w-auto">Pick a time →</a>
-              ) : (
-                <a href={`tel:${tel}`} className="btn-green w-full lg:w-auto">Call {site.phone}</a>
-              )}
-              <Link href="/free-audit" className="btn-outline-light w-full lg:w-auto">Get my free audit</Link>
+
+            <Reveal delay={0.1}>
+              <div className="rounded-2xl bg-white p-6 text-ink sm:p-8">
+                <h3 className="font-display text-2xl font-extrabold">{site.name}</h3>
+                <p className="mt-1 text-[15px] text-slate">Growth systems for {site.audience}</p>
+                <dl className="mt-6 divide-y divide-line">
+                  {details.map((d) => (
+                    <div key={d.label} className="grid grid-cols-[76px_1fr] gap-3 py-3.5 text-[14px] sm:grid-cols-[96px_1fr] sm:gap-4 sm:text-[15px]">
+                      <dt className="text-slate">{d.label}</dt>
+                      <dd className="min-w-0 font-semibold break-words">
+                        {d.href ? <a href={d.href} className="hover:text-green-ink hover:underline">{d.value}</a> : d.value}
+                      </dd>
+                    </div>
+                  ))}
+                </dl>
+                <p className="mt-5 rounded-xl bg-mint px-4 py-3 text-sm text-ink">
+                  We reply within one business day, usually the same day.
+                </p>
+              </div>
             </Reveal>
           </div>
         </section>
 
-        {/* AREAS + FAQ (white) */}
+        {/* FAQ (white) */}
         <section className="section bg-white">
-          <div className="container-x grid gap-12 lg:grid-cols-[.8fr_1.2fr]">
+          <div className="container-x grid gap-10 lg:grid-cols-[.8fr_1.2fr]">
+            <h2 className="h-display text-[clamp(34px,4.6vw,56px)]">Good to know</h2>
             <div>
-              <div className="rounded-2xl bg-paper p-7">
-                <p className="font-semibold text-[13px] text-slate">Where we work</p>
-                <p className="mt-2 font-display text-2xl font-bold">{site.areaServed}</p>
-                <p className="mt-2 text-slate">Remote-first, with video calls and a client app so you always know what’s happening.</p>
-                <p className="mt-5 font-semibold text-[13px] text-slate">Hours</p>
-                <p className="mt-1">{site.hours}</p>
-              </div>
-            </div>
-            <div>
-              <h2 className="font-display text-3xl font-bold">Good to know</h2>
-              <div className="mt-6 divide-y divide-line border-y border-line">
+              <div className="divide-y divide-line border-y border-line">
                 {faqs.map((f) => (
                   <details key={f.q} className="group py-5 [&_summary::-webkit-details-marker]:hidden">
                     <summary className="flex cursor-pointer list-none items-center justify-between gap-6 font-display text-lg font-semibold">

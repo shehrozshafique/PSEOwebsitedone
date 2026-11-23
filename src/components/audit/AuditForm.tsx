@@ -6,7 +6,6 @@ import { AnimatePresence, motion } from "motion/react";
 import { submitLead } from "@/lib/attribution";
 import FormConsent from "@/components/FormConsent";
 
-const businessTypes = ["Online store / Ecommerce", "Home services", "Roofing / Contractor", "Dental / Medical", "Law firm", "Med spa / Beauty", "Real estate", "Other"];
 const goals = ["More calls from Google", "More online sales", "Better website or store", "Stop missing leads", "More reviews", "Not sure yet"];
 
 const input =
@@ -19,11 +18,11 @@ const input =
 export default function AuditForm({ id = "audit-form" }: { id?: string }) {
   const router = useRouter();
   const [step, setStep] = useState(0);
-  const [data, setData] = useState({ website: "", type: "", goal: "", name: "", phone: "", email: "" });
+  const [data, setData] = useState({ website: "", goal: "", name: "", phone: "", email: "" });
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [honey, setHoney] = useState("");
-  const set = (k: keyof typeof data) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => setData({ ...data, [k]: e.target.value });
+  const set = (k: keyof typeof data) => (e: React.ChangeEvent<HTMLInputElement>) => setData({ ...data, [k]: e.target.value });
 
   return (
     <form
@@ -33,7 +32,7 @@ export default function AuditForm({ id = "audit-form" }: { id?: string }) {
         if (step === 0) return setStep(1);
         setBusy(true);
         setError(null);
-        const err = await submitLead({ form: "free-audit-page", ...data, businessType: data.type, company: honey });
+        const err = await submitLead({ form: "free-audit-page", ...data, company: honey });
         if (err) {
           setError(err);
           setBusy(false);
@@ -58,13 +57,6 @@ export default function AuditForm({ id = "audit-form" }: { id?: string }) {
             <label className="grid gap-1.5 text-sm font-medium">
               Your website
               <input id="website" name="website" className={input} placeholder="yourbusiness.com or yourstore.com" value={data.website} onChange={set("website")} required autoComplete="url" inputMode="url" autoCapitalize="none" autoCorrect="off" spellCheck={false} />
-            </label>
-            <label className="grid gap-1.5 text-sm font-medium">
-              Type of business
-              <select id="type" name="type" className={input} value={data.type} onChange={set("type")} required>
-                <option value="" disabled>Choose one</option>
-                {businessTypes.map((t) => <option key={t}>{t}</option>)}
-              </select>
             </label>
             <fieldset className="grid gap-2">
               <legend className="mb-1.5 text-sm font-medium">What do you want most?</legend>

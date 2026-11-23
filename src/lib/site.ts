@@ -13,10 +13,11 @@ export const site = {
   rating: "4.9", // TODO: real Google rating
   audience: "local businesses and online stores", // TODO: confirm who the site is for
   url: "https://permanentseo.com", // used for canonical links, sitemap and SEO schema
-  areaServed: "United States", // TODO: country / cities you serve
+  areaServed: ["United Kingdom", "United States"], // countries we work in
   hours: "Mon–Fri, 9 AM – 6 PM", // TODO: real business hours (and time zone)
   bookingUrl: "", // TODO: CRM booking calendar link; the Book a call buttons appear once this is set
   legalName: "Permanent SEO LLC", // TODO: your registered business name
+  companyNumber: "", // TODO: registration number; shown on the contact page once set
   address: "Street, City, State ZIP", // TODO: business mailing address
   governingState: "Virginia", // TODO: state whose laws govern the Terms
 };
