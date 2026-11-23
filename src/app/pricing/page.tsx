@@ -3,191 +3,206 @@ import Image from "next/image";
 import Link from "next/link";
 import Header from "@/components/home/Header";
 import { FinalCta, Footer } from "@/components/home/Closing";
-import { Marker, Reveal } from "@/components/motion";
-import Plans from "@/components/pricing/Plans";
-import { compare, money, plans, pricingFaqs, projects, replaces } from "@/lib/pricing";
+import { Reveal } from "@/components/motion";
+import { BillingProvider, BillingToggle, EmailSavings, OfferPlans, PackagePlans, PermanentPromise, StarterBundle, ValueStack } from "@/components/pricing/Billing";
+import { MIN_TERM, moreServices, offers, platformFeatures, YEARLY_DISCOUNT } from "@/lib/offers";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: `Pricing | ${site.name}`,
-  description: "Simple monthly plans for websites, SEO, Google Maps, ads and AI automation. No long contracts. Start with a free audit.",
+  title: `Pricing: growth packages and services | ${site.name}`,
+  description:
+    "Done-for-you growth packages for local businesses and online stores: website, Google Maps, AI that answers every lead, reviews and email. Backed by the Permanent Promise. Prices in $ and £.",
   alternates: { canonical: "/pricing" },
 };
 
-function Cell({ v, dark }: { v: boolean | string; dark?: boolean }) {
-  if (v === true) return <span className={`inline-grid size-6 place-items-center rounded-full text-xs ${dark ? "bg-green text-[#03150a]" : "bg-ink text-white"}`} aria-label="Included">✓</span>;
-  if (v === false) return <span className="text-ink/25" aria-label="Not included">—</span>;
-  return <span className="text-sm font-medium">{v}</span>;
-}
+const faqs = [
+  { q: "Why is there a 6-month minimum?", a: "SEO, Google Maps and reviews build up month after month. Six months gives the system time to work and gives you real results to judge. After that it is month to month and you can leave anytime." },
+  { q: "What exactly do you guarantee?", a: "The Permanent Promise: your system is live within 14 days of kickoff or your first month is free; every lead gets a reply within 60 seconds, 24/7, or that month is free; and you own your website, domain, content and data." },
+  { q: "Can I change packages later?", a: "Yes. You can move up a package anytime. Most clients start on Foundation or Growth and add more as they grow." },
+  { q: "Is the website really included?", a: "Yes. The Starter Bundle includes a 5-page Starter website, and Growth and Scale include the Business website with full tracking setup. On its own, a Starter website is a one-time build plus hosting." },
+  { q: "What is the Starter Bundle?", a: "A website, review automation and an email marketing platform in one monthly price, with the website build and setup included. It is how most businesses start with us, and you can move up to a Growth package anytime." },
+  { q: "Do you charge in pounds or dollars?", a: "Both. UK businesses are billed in pounds, everyone else in dollars. Use the switch at the top of the page to see either." },
+  { q: "How do I pay?", a: "Pick a package and we send a secure payment link. Monthly plans are billed each month; pay yearly to save 20%." },
+];
 
 export default function PricingPage() {
-  const toolsTotal = replaces.reduce((a, r) => a + r.cost, 0);
   const faqLd = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    mainEntity: pricingFaqs.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
+    mainEntity: faqs.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
   };
 
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
       <Header dark={false} />
-      <main>
-        {/* HERO + PLANS (light, pastel glow so the glass cards read) */}
-        <section className="relative overflow-hidden bg-white pt-14 pb-24 md:pt-20 md:pb-32">
-          <div className="container-x relative">
-            <div className="mx-auto max-w-3xl text-center">
-              <h1 className="h-display text-[clamp(44px,6.4vw,84px)] font-black">
-                Simple plans
-                <span className="block font-normal text-slate">No long contracts</span>
+      <BillingProvider>
+        <main>
+          {/* HERO: the promise */}
+          <section className="bg-white pt-10 pb-12 text-center md:pt-16 md:pb-16">
+            <div className="container-x">
+              <h1 className="h-display mx-auto max-w-[18ch] text-[clamp(40px,6vw,84px)] font-black">
+                More booked jobs and orders <span className="block font-normal text-slate">without chasing a single lead</span>
               </h1>
-              <p className="mx-auto mt-5 max-w-[54ch] text-lg text-slate">
-                One monthly plan covers your marketing, your lead follow-up and the app that runs it. <Marker>Cancel anytime</Marker>.
+              <p className="mx-auto mt-5 max-w-[56ch] text-[17px] text-slate md:text-lg">
+                We build and run the whole system for you: a website that converts, top spots on Google, AI that answers every call and message in seconds, and reviews that keep coming in.
               </p>
-            </div>
-            <div className="mt-12">
-              <Plans />
-            </div>
-          </div>
-        </section>
-
-        {/* WHAT YOU REPLACE (dark, blue glow) */}
-        <section className="relative overflow-hidden bg-ink py-24 text-white md:py-32">
-          <div className="container-x relative grid items-center gap-14 lg:grid-cols-[.9fr_1.1fr]">
-            <Reveal>
-              <h2 className="h-display text-[clamp(36px,5vw,60px)]">One app instead of eight subscriptions</h2>
-              <p className="mt-5 max-w-[46ch] text-lg text-mist">
-                Every plan includes the {site.platformName}: calls, texts, email, booking, reviews and payments in one place, with a mobile app.
-              </p>
-            </Reveal>
-            <Reveal delay={0.1}>
-              <div className="glass-dark rounded-2xl p-6 sm:p-8">
-                <ul className="divide-y divide-white/10">
-                  {replaces.map((r) => (
-                    <li key={r.tool} className="flex items-center justify-between gap-4 py-3">
-                      <span className="text-white/80 line-through decoration-white/25">{r.tool}</span>
-                      <span className="font-semibold text-sm text-white/55 tabular-nums">{money(r.cost)}/mo</span>
-                    </li>
-                  ))}
-                </ul>
-                <div className="mt-4 flex flex-wrap items-center justify-between gap-4 rounded-2xl bg-white p-5 text-ink">
-                  <div>
-                    <p className="font-semibold text-[13px] text-slate">Separate tools</p>
-                    <p className="font-display text-3xl font-black line-through decoration-coral/70">{money(toolsTotal)}+/mo</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="font-semibold text-[13px] text-slate">With us</p>
-                    <p className="font-display text-3xl font-black text-green-ink">Included</p>
-                  </div>
-                </div>
-                <p className="mt-3 text-xs text-white/40">Typical prices for popular standalone tools. Your costs may vary.</p>
+              <div className="mt-8">
+                <BillingToggle />
               </div>
-            </Reveal>
-          </div>
-        </section>
+              <p className="mt-4 text-[13px] text-slate">
+                {MIN_TERM} · Pay yearly and save {Math.round(YEARLY_DISCOUNT * 100)}%
+              </p>
+            </div>
+          </section>
 
-        {/* COMPARE (white) */}
-        <section className="section bg-white">
-          <div className="container-x">
-            <Reveal className="max-w-3xl">
-              <h2 className="h-display text-[clamp(36px,5vw,60px)]">See exactly what you get</h2>
-            </Reveal>
-            <div className="mt-10 overflow-hidden rounded-2xl border border-line sm:mt-12 sm:overflow-x-auto sm:rounded-2xl">
-              {/* phones: fixed layout so all three plans fit on screen, no sideways scrolling */}
-              <table className="w-full table-fixed border-collapse text-left sm:min-w-[720px] sm:table-auto">
-                <thead>
-                  <tr className="bg-paper">
-                    <th scope="col" className="w-[38%] px-3 py-4 text-xs font-semibold text-slate sm:w-[40%] sm:px-6 sm:py-5">Feature</th>
-                    {plans.map((p) => (
-                      <th key={p.key} scope="col" className={`px-1 py-4 text-center sm:px-6 sm:py-5 ${p.popular ? "bg-ink text-white" : ""}`}>
-                        <span className="font-display text-[15px] font-bold sm:text-lg">{p.name}</span>
-                        <span className={`block text-[11px] font-normal sm:text-sm ${p.popular ? "text-mist" : "text-slate"}`}>{money(p.monthly)}/mo</span>
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                {compare.map((g) => (
-                  <tbody key={g.group}>
-                    <tr>
-                      <th colSpan={4} scope="colgroup" className="border-t border-line bg-white px-3 pt-6 pb-2 font-display sm:px-6 sm:pt-7 text-sm font-bold text-green-ink">
-                        {g.group}
-                      </th>
-                    </tr>
-                    {g.rows.map((r) => (
-                      <tr key={r.label} className="border-t border-line/60">
-                        <th scope="row" className="px-3 py-3 text-sm leading-snug font-normal sm:px-6 sm:py-3.5 sm:text-[15px]">{r.label}</th>
-                        {r.values.map((v, i) => (
-                          <td key={i} className={`px-1 py-3 text-center text-xs sm:px-6 sm:py-3.5 sm:text-base ${plans[i].popular ? "bg-ink/[0.03]" : ""}`}>
-                            <Cell v={v} />
-                          </td>
-                        ))}
-                      </tr>
-                    ))}
-                  </tbody>
+          {/* STARTER BUNDLE: the front door */}
+          <section id="starter" className="scroll-mt-24 bg-white pb-12 md:pb-16">
+            <div className="container-x">
+              <Reveal>
+                <StarterBundle />
+              </Reveal>
+            </div>
+          </section>
+
+          {/* PACKAGES */}
+          <section className="bg-white pb-6">
+            <div className="container-x">
+              <Reveal className="max-w-3xl">
+                <h2 className="h-display text-[clamp(34px,4.6vw,56px)]">Ready for more? Growth packages</h2>
+                <p className="mt-4 text-[17px] text-slate">Everything done for you: Google Maps ranking, AI that answers every call, and email and SMS that sell.</p>
+              </Reveal>
+            </div>
+          </section>
+          <section id="packages" className="scroll-mt-24 bg-white pb-16 md:pb-24">
+            <div className="container-x">
+              <PackagePlans />
+            </div>
+          </section>
+
+          {/* VALUE STACK + PROMISE */}
+          <section className="bg-white pb-16 md:pb-24">
+            <div className="container-x grid gap-6">
+              <Reveal>
+                <ValueStack />
+              </Reveal>
+              <Reveal>
+                <PermanentPromise />
+              </Reveal>
+            </div>
+          </section>
+
+          {/* SINGLE SERVICES */}
+          <section className="border-t border-line bg-white pt-14 md:pt-20">
+            <div className="container-x">
+              <Reveal className="max-w-3xl">
+                <h2 className="h-display text-[clamp(34px,4.6vw,56px)]">Only need one thing?</h2>
+                <p className="mt-4 text-[17px] text-slate">Every service is available on its own, on the same platform, with the same promise.</p>
+              </Reveal>
+            </div>
+            <nav aria-label="Single services" className="sticky top-[72px] z-30 mt-8 border-b border-line bg-white/95 backdrop-blur">
+              <ul className="no-scrollbar container-x flex gap-2 overflow-x-auto py-3 md:justify-center">
+                {offers.map((o) => (
+                  <li key={o.key} className="flex-none">
+                    <a href={`#${o.key}`} className="flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium text-slate transition-colors hover:bg-paper hover:text-ink">
+                      <Image src={`/graphics/icons/${o.icon}.webp`} alt="" width={28} height={28} className="size-6" />
+                      {o.short}
+                    </a>
+                  </li>
                 ))}
-              </table>
-            </div>
-          </div>
-        </section>
+              </ul>
+            </nav>
+          </section>
 
-        {/* ONE-TIME PROJECTS (paper) */}
-        <section className="section bg-paper">
-          <div className="container-x">
-            <Reveal className="flex flex-wrap items-end justify-between gap-6">
-              <div className="max-w-2xl">
-                <h2 className="h-display text-[clamp(36px,5vw,60px)]">Need just one thing done?</h2>
-              </div>
-              <p className="max-w-[36ch] text-slate">Fixed price, agreed before we start. No monthly plan required.</p>
-            </Reveal>
-            <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {projects.map((p, i) => (
-                <Reveal key={p.name} delay={i * 0.05}>
-                  <div className="flex h-full flex-col rounded-2xl bg-white p-6 sm:rounded-2xl sm:p-7">
-                    <Image src={`/graphics/icons/${p.icon}.webp`} alt="" width={64} height={64} className="size-12 sm:size-14" />
-                    <h3 className="mt-5 font-display text-xl font-bold">{p.name}</h3>
-                    <p className="mt-1.5 flex-1 text-[15px] text-slate">{p.text}</p>
-                    <p className="mt-5 font-display text-2xl font-black">
-                      <span className="text-sm font-normal text-slate">from </span>
-                      {money(p.from)}
-                    </p>
+          {offers.map((o) => (
+            <section key={o.key} id={o.key} className="scroll-mt-36 bg-white py-12 md:py-16">
+              <div className="container-x">
+                <Reveal className="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+                  <div className="flex items-center gap-4">
+                    <Image src={`/graphics/icons/${o.icon}.webp`} alt="" width={96} height={96} className="size-16 flex-none md:size-20" />
+                    <div>
+                      <h2 className="font-display text-3xl font-extrabold md:text-4xl">{o.title}</h2>
+                      <p className="mt-1 max-w-[60ch] text-[15px] text-slate md:text-base">{o.pitch}</p>
+                    </div>
                   </div>
+                  {o.serviceSlug && (
+                    <Link href={`/services/${o.serviceSlug}`} className="flex-none text-sm font-semibold text-green-ink hover:underline">
+                      See what’s included →
+                    </Link>
+                  )}
                 </Reveal>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* GUARANTEE + FAQ (white) */}
-        <section className="section bg-white">
-          <div className="container-x grid gap-12 lg:grid-cols-[.85fr_1.15fr]">
-            <div>
-              <div className="rounded-2xl bg-lime p-8">
-                <p className="font-semibold text-xs text-green-ink">Our promise</p>
-                {/* TODO: confirm guarantee wording */}
-                <p className="mt-3 font-display text-3xl leading-tight font-extrabold">No contracts. No hidden fees. You own everything we build.</p>
-                <p className="mt-3 text-ink/70">If we’re not the right fit, you leave with your website, data and content. No hard feelings.</p>
+                <OfferPlans offer={o} />
+                {o.key === "email-platform" && (
+                  <div className="mt-6">
+                    <EmailSavings />
+                  </div>
+                )}
               </div>
-              <Link href="/free-audit" className="btn-ink mt-6">Start with a free audit →</Link>
+            </section>
+          ))}
+
+          {/* PLATFORM */}
+          <section className="section bg-paper">
+            <div className="container-x">
+              <Reveal className="max-w-3xl">
+                <h2 className="h-display text-[clamp(34px,4.6vw,56px)]">Every plan runs on one platform</h2>
+                <p className="mt-4 text-[17px] text-slate">The same app powers your leads, messages, bookings, reviews and marketing, so you never juggle ten logins again.</p>
+              </Reveal>
+              <ul className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                {platformFeatures.map((f) => (
+                  <li key={f.title} className="flex gap-3 rounded-2xl bg-white p-5">
+                    <span className="mt-0.5 grid size-8 flex-none place-items-center rounded-lg bg-green/15 text-green-ink" aria-hidden="true">
+                      <svg viewBox="0 0 20 20" className="size-4" fill="currentColor"><path d="M8.2 14.6 3.6 10l1.4-1.4 3.2 3.2 6.8-6.8 1.4 1.4z" /></svg>
+                    </span>
+                    <span>
+                      <span className="block font-display font-bold">{f.title}</span>
+                      <span className="block text-[15px] text-slate">{f.text}</span>
+                    </span>
+                  </li>
+                ))}
+              </ul>
             </div>
-            <div>
-              <h2 className="font-display text-3xl font-bold">Pricing questions</h2>
-              <div className="mt-6 divide-y divide-line border-y border-line">
-                {pricingFaqs.map((f) => (
-                  <details key={f.q} className="group py-5 [&_summary::-webkit-details-marker]:hidden">
-                    <summary className="flex cursor-pointer list-none items-center justify-between gap-6 font-display text-lg font-semibold">
+          </section>
+
+          {/* MORE SERVICES */}
+          <section className="bg-white py-14 md:py-20">
+            <div className="container-x">
+              <h2 className="font-display text-2xl font-bold md:text-3xl">More services, quoted per project</h2>
+              <ul className="mt-6 grid gap-3 md:grid-cols-3">
+                {moreServices.map((m) => (
+                  <li key={m.slug}>
+                    <Link href={`/services/${m.slug}`} className="group flex items-center gap-4 rounded-2xl bg-paper p-5 transition-transform hover:-translate-y-0.5">
+                      <Image src={`/graphics/icons/${m.icon}.webp`} alt="" width={56} height={56} className="size-12 flex-none" />
+                      <span className="font-display text-lg font-bold">{m.title}</span>
+                      <span aria-hidden="true" className="ml-auto transition-transform group-hover:translate-x-1">→</span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </section>
+
+          {/* FAQ */}
+          <section className="section bg-paper">
+            <div className="container-x grid gap-10 md:grid-cols-[.8fr_1.2fr]">
+              <h2 className="h-display text-[clamp(34px,4.6vw,56px)]">Pricing questions</h2>
+              <div className="border-t border-line">
+                {faqs.map((f) => (
+                  <details key={f.q} className="group border-b border-line">
+                    <summary className="flex cursor-pointer list-none items-center justify-between gap-4 py-5 font-display text-lg font-semibold [&::-webkit-details-marker]:hidden">
                       {f.q}
-                      <span className="grid size-8 flex-none place-items-center rounded-full border border-line transition-transform duration-300 group-open:rotate-45 group-open:bg-ink group-open:text-white" aria-hidden="true">+</span>
+                      <span aria-hidden="true" className="grid size-8 flex-none place-items-center rounded-full bg-white transition-transform group-open:rotate-45">+</span>
                     </summary>
-                    <p className="max-w-[60ch] pt-3 text-slate">{f.a}</p>
+                    <p className="pb-5 text-slate">{f.a}</p>
                   </details>
                 ))}
               </div>
             </div>
-          </div>
-        </section>
+          </section>
 
-        <FinalCta />
-      </main>
+          <FinalCta />
+        </main>
+      </BillingProvider>
       <Footer />
     </>
   );

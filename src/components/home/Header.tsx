@@ -4,8 +4,10 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { AnimatePresence, motion } from "motion/react";
-import { cases, services, site, stages } from "@/lib/site";
+import { cases, services, site } from "@/lib/site";
 import { BrandMark } from "@/components/brand/BrandMark";
+import { fromPrice, moreServices } from "@/lib/offers";
+import { useCurrency } from "@/lib/currency";
 import { telHref } from "@/components/MobileCta";
 
 export function Logo({ light = false }: { light?: boolean }) {
@@ -64,50 +66,44 @@ const company = [
 /* ---------- desktop panels ---------- */
 
 function ServicesPanel({ close }: { close: () => void }) {
+  const [cur] = useCurrency();
   return (
-    <div className="grid gap-6 p-6 lg:grid-cols-[1.6fr_1fr]">
-      <div>
-        <p className="px-3 font-semibold text-[13px] text-slate">Services</p>
-        <ul className="mt-3 grid gap-1 sm:grid-cols-2">
-          {services.map((s) => (
-            <li key={s.slug}>
-              <Link href={`/services/${s.slug}`} onClick={close} className="group flex items-start gap-3.5 rounded-2xl p-3 transition-colors hover:bg-paper">
-                <span className="grid size-12 flex-none place-items-center rounded-xl transition-transform duration-300 group-hover:-rotate-6" style={{ background: `${s.color === "#0a0b0a" ? "#8b6bff" : s.color}1a` }}>
-                  <Image src={`/graphics/icons/${s.icon}.webp`} alt="" width={40} height={40} className="size-9" />
-                </span>
-                <span className="min-w-0">
-                  <span className="flex items-center gap-1.5 font-display font-bold">
-                    {s.title}
-                    <span aria-hidden="true" className="-translate-x-1 text-slate opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-100">→</span>
-                  </span>
-                  <span className="mt-0.5 block text-[13px] leading-snug text-slate">{s.text}</span>
-                </span>
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div className="flex flex-col gap-4">
-        <div className="rounded-2xl bg-paper p-5">
-          <p className="font-semibold text-[13px] text-slate">The growth system</p>
-          <ol className="mt-3 grid gap-1">
-            {stages.map((st) => (
-              <li key={st.key}>
-                <Link href="/#growth" onClick={close} className="flex items-center gap-3 rounded-xl px-2 py-1.5 text-sm hover:bg-white">
-                  <span className="size-2 rounded-full" style={{ background: st.color }} aria-hidden="true" />
-                  <span className="font-medium">{st.label}</span>
-                  <span className="truncate text-slate">· {st.title}</span>
-                </Link>
-              </li>
-            ))}
-          </ol>
-        </div>
-        <Link href="/free-audit" onClick={close} className="group relative mt-auto overflow-hidden rounded-2xl bg-ink p-5 text-white">
-          <span className="relative block font-semibold text-[13px] text-white/50">Free · 48 hours</span>
-          <span className="relative mt-1 block font-display text-lg font-bold">Not sure what you need?</span>
-          <span className="relative mt-1 block text-sm text-mist">Get a free audit and we’ll tell you what to fix first.</span>
-          <span className="relative mt-3 inline-flex items-center gap-1 text-sm font-semibold text-green-soft">Get my free audit <span className="transition-transform group-hover:translate-x-1">→</span></span>
-        </Link>
+    <div className="p-5">
+      {/* service cards only: 7 services + a pricing card, 4 per row */}
+      <ul className="grid grid-cols-4 gap-2">
+        {services.map((s) => (
+          <li key={s.slug}>
+            <Link href={`/services/${s.slug}`} onClick={close} className="group flex h-full flex-col rounded-2xl p-4 transition-colors hover:bg-paper">
+              <span className="grid size-12 place-items-center rounded-xl transition-transform duration-300 group-hover:-rotate-6" style={{ background: `${s.color}1a` }}>
+                <Image src={`/graphics/icons/${s.icon}.webp`} alt="" width={40} height={40} className="size-9" />
+              </span>
+              <span className="mt-3 flex items-center gap-1.5 font-display font-bold">
+                {s.title}
+                <span aria-hidden="true" className="-translate-x-1 text-slate opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-100">→</span>
+              </span>
+              <span className="mt-1 block flex-1 text-[13px] leading-snug text-slate">{s.text}</span>
+              <span className="mt-2 block text-[13px] font-semibold text-green-ink">{fromPrice(s.slug, cur)}</span>
+            </Link>
+          </li>
+        ))}
+        <li>
+          <Link href="/pricing" onClick={close} className="group flex h-full flex-col justify-between rounded-2xl bg-ink p-4 text-white">
+            <span className="font-display text-lg font-bold">See all pricing</span>
+            <span className="mt-1 block text-[13px] leading-snug text-mist">Growth packages and single services. Save 20% yearly.</span>
+            <span className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-green-soft">
+              Compare plans <span aria-hidden="true" className="transition-transform group-hover:translate-x-1">→</span>
+            </span>
+          </Link>
+        </li>
+      </ul>
+      <div className="mt-2 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-line px-4 pt-4 text-sm">
+        <span className="text-slate">More services:</span>
+        {moreServices.map((m) => (
+          <Link key={m.slug} href={`/services/${m.slug}`} onClick={close} className="inline-flex items-center gap-1.5 font-medium hover:text-green-ink">
+            <Image src={`/graphics/icons/${m.icon}.webp`} alt="" width={20} height={20} className="size-5" />
+            {m.title}
+          </Link>
+        ))}
       </div>
     </div>
   );

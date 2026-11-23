@@ -5,6 +5,8 @@ import { notFound } from "next/navigation";
 import Header from "@/components/home/Header";
 import { FinalCta, Footer } from "@/components/home/Closing";
 import { Reveal } from "@/components/motion";
+import { BillingProvider, BillingToggle, EmailSavings, OfferPlans, StarterBundle } from "@/components/pricing/Billing";
+import { offerFor } from "@/lib/offers";
 import { cases, site } from "@/lib/site";
 import { getService, servicesData } from "@/lib/services";
 
@@ -30,6 +32,7 @@ export default async function ServicePage({ params }: Props) {
   const s = getService((await params).slug);
   if (!s) notFound();
   const c = cases[s.caseIndex] ?? cases[0];
+  const plans = offerFor(s.slug);
   const related = s.related.map(getService).filter(Boolean) as NonNullable<ReturnType<typeof getService>>[];
 
   const jsonLd = {
@@ -143,6 +146,37 @@ export default async function ServicePage({ params }: Props) {
             </ul>
           </div>
         </section>
+
+        {/* PLANS & PRICING */}
+        {plans.length > 0 && (
+          <section id="pricing" className="section scroll-mt-24 bg-paper">
+            <BillingProvider>
+              <div className="container-x">
+                <Reveal className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
+                  <div className="max-w-2xl">
+                    <h2 className="h-display text-[clamp(36px,5vw,60px)]">Plans & pricing</h2>
+                    <p className="mt-3 text-slate">Monthly plans: 6-month minimum, then month to month. Pay yearly and save 20%.</p>
+                  </div>
+                  {plans.some((o) => o.tiers.some((t) => t.billing === "monthly")) && <BillingToggle />}
+                </Reveal>
+                <div className="mt-10 grid gap-12">
+                  {plans.map((o) => (
+                    <div key={o.key}>
+                      {plans.length > 1 && <h3 className="mb-5 font-display text-2xl font-bold">{o.title}</h3>}
+                      <OfferPlans offer={o} />
+                      {o.key === "email-platform" && (
+                        <div className="mt-6">
+                          <EmailSavings />
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                  {["website-design", "reputation-management", "email-marketing"].includes(s.slug) && <StarterBundle compact />}
+                </div>
+              </div>
+            </BillingProvider>
+          </section>
+        )}
 
         {/* PROCESS (dark band, glow in the service color) */}
         <section className="relative overflow-hidden bg-ink py-16 text-white sm:py-24 md:py-32">

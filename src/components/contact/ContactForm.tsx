@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion } from "motion/react";
 import { submitLead } from "@/lib/attribution";
@@ -17,6 +17,14 @@ export default function ContactForm() {
   const [done, setDone] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [honey, setHoney] = useState("");
+  // arriving from a pricing button (?plan=...): pre-fill the message with the chosen plan
+  const message = useRef<HTMLTextAreaElement>(null);
+  useEffect(() => {
+    const p = new URLSearchParams(window.location.search).get("plan");
+    if (p && message.current && !message.current.value) message.current.value = `I’d like to start: ${p.slice(0, 120)}.
+
+About my business: `;
+  }, []);
 
   return (
     <div className="glass-light relative rounded-2xl p-6 sm:p-8">
@@ -87,7 +95,7 @@ export default function ContactForm() {
             </div>
             <label className="mt-4 grid gap-1.5 text-sm font-medium">
               Message
-              <textarea id="c-message" name="message" rows={5} required maxLength={3000} className={`${input} resize-y`} placeholder="Tell us a bit about your business and what you need help with." />
+              <textarea ref={message} id="c-message" name="message" rows={5} required maxLength={3000} className={`${input} resize-y`} placeholder="Tell us a bit about your business and what you need help with." />
             </label>
 
             {error && <p role="alert" className="mt-4 rounded-xl bg-coral/10 px-4 py-3 text-sm text-[#c2391b]">{error}</p>}

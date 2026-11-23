@@ -86,13 +86,13 @@ export const stats = [
 ];
 
 export const services = [
-  { slug: "website-design", title: "Website Design", text: "Fast, mobile-first websites that turn visitors into calls and customers.", color: "#1fae55", size: "lg", icon: "website" },
-  { slug: "ecommerce-growth", title: "Ecommerce Growth", text: "Shopify stores, email & SMS flows and ads that grow online sales.", color: "#e0459b", size: "md", icon: "shop" },
-  { slug: "seo", title: "SEO", text: "Rank higher on Google for the searches that bring buyers.", color: "#4d8dff", size: "md", icon: "seo" },
-  { slug: "local-seo", title: "Local SEO & Maps", text: "Get into the top 3 on Google Maps in your area.", color: "#f29a00", size: "md", icon: "local" },
-  { slug: "google-meta-ads", title: "Google & Meta Ads", text: "Ads that bring booked jobs and sales, tracked to the dollar.", color: "#ff6a4a", size: "md", icon: "ads" },
-  { slug: "ai-automation", title: "AI Automation", text: "AI that answers, follows up and books 24/7.", color: "#8b6bff", size: "md", icon: "ai" },
-  { slug: "video-content", title: "Video & Content", text: "Short videos, UGC and posts that build trust and sell.", color: "#0a0b0a", size: "md", icon: "video" },
+  { slug: "website-design", title: "Website Design & Hosting", text: "Fast websites built to rank on Google and ChatGPT and turn visitors into calls.", color: "#1fae55", size: "lg", icon: "website" },
+  { slug: "email-marketing", title: "Email Marketing", text: "An affordable email platform, or we run your email and SMS for you.", color: "#4d8dff", size: "md", icon: "email" },
+  { slug: "local-seo", title: "Local SEO & Google Maps", text: "Get into the Maps top 3 for more calls, reviews and visibility.", color: "#f29a00", size: "md", icon: "local" },
+  { slug: "seo", title: "SEO", text: "Rank for the searches that bring buyers, for local businesses and stores.", color: "#4d8dff", size: "md", icon: "seo" },
+  { slug: "reputation-management", title: "Reputation & Reviews", text: "AI asks every customer for a review and replies for you.", color: "#f2a900", size: "md", icon: "reviews" },
+  { slug: "ai-automation", title: "AI Chatbots & Voice Agents", text: "Every chat and call answered in seconds, 24/7, and booked.", color: "#8b6bff", size: "md", icon: "chatbot" },
+  { slug: "social-media-automation", title: "Social Media Automation", text: "Schedule everywhere, AI captions and one inbox for every DM.", color: "#e0459b", size: "md", icon: "social" },
 ];
 
 // Case studies live in ./cases.ts (re-exported here so older imports keep working)
@@ -122,13 +122,13 @@ export const faqs = [
 ];
 
 export const footerServices = [
-  { label: "Website Design", href: "/services/website-design" },
-  { label: "Ecommerce Growth", href: "/services/ecommerce-growth" },
-  { label: "SEO", href: "/services/seo" },
+  { label: "Website Design & Hosting", href: "/services/website-design" },
+  { label: "Email Marketing", href: "/services/email-marketing" },
   { label: "Local SEO & Maps", href: "/services/local-seo" },
-  { label: "Google & Meta Ads", href: "/services/google-meta-ads" },
-  { label: "AI Automation", href: "/services/ai-automation" },
-  { label: "Video & Content", href: "/services/video-content" },
+  { label: "SEO", href: "/services/seo" },
+  { label: "Reputation & Reviews", href: "/services/reputation-management" },
+  { label: "AI Chatbots & Voice", href: "/services/ai-automation" },
+  { label: "Social Media Automation", href: "/services/social-media-automation" },
 ];
 export const footerCompany = [
   { label: "About", href: "/about" },
